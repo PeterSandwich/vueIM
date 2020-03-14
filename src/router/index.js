@@ -5,6 +5,7 @@ import account from '@/components/account'
 import login from '@/components/login'
 import register from '@/components/register'
 import Notfound from '@/components/Notfound'
+import master from '@/components/master'
 
 Vue.use(Router)
 
@@ -13,7 +14,15 @@ export default new Router({
     {
       path: '/',
       name: 'home',
-      component: home
+      component: home,
+      redirect: '/master',
+      children:[
+        {
+          path: 'master',
+          name:'master',
+          component: master
+        }
+      ]
     },
     {
       path: '/account',
