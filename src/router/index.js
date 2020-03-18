@@ -5,7 +5,9 @@ import account from '@/components/account'
 import login from '@/components/login'
 import register from '@/components/register'
 import Notfound from '@/components/Notfound'
-import master from '@/components/master'
+import channel from '@/components/channel'
+import friend from '@/components/friend'
+import infomation from '@/components/infomation'
 
 Vue.use(Router)
 
@@ -15,12 +17,24 @@ export default new Router({
       path: '/',
       name: 'home',
       component: home,
-      redirect: '/master',
+      redirect: '/channel',
       children:[
         {
-          path: 'master',
-          name:'master',
-          component: master
+          path: 'channel',
+          name:'channel',
+          component: channel,
+          redirect: '/channel/@me',
+          children:[
+            {
+              path: '@me',
+              name: 'friend',
+              component: friend
+            },{
+              path: 'infomation',
+              name: 'infomation',
+              component: infomation
+            }
+          ]
         }
       ]
     },
