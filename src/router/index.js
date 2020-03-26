@@ -4,10 +4,14 @@ import home from '@/components/home'
 import account from '@/components/account'
 import login from '@/components/login'
 import register from '@/components/register'
+import discovery from '@/components/discovery'
+import test from '@/components/test'
 import Notfound from '@/components/Notfound'
-import channel from '@/components/channel'
-import friend from '@/components/friend'
+import master from '@/components/master'
+import friend from '@/components/friend/friend'
 import infomation from '@/components/infomation'
+import chat from '@/components/chat/chat'
+import channel from '@/components/channel/channel'
 
 Vue.use(Router)
 
@@ -17,24 +21,38 @@ export default new Router({
       path: '/',
       name: 'home',
       component: home,
-      redirect: '/channel',
+      redirect: '/master',
       children:[
         {
-          path: 'channel',
-          name:'channel',
-          component: channel,
-          redirect: '/channel/@me',
+          path: 'master',
+          name:'master',
+          component: master,
+          redirect: '/master/@me',
           children:[
             {
               path: '@me',
-              name: 'friend',
+              name: 'me',
               component: friend
             },{
               path: 'infomation',
               name: 'infomation',
               component: infomation
+            },{
+              path: 'chat/:id',
+              name: 'chat',
+              component: chat
             }
           ]
+        },
+        {
+          path: 'channel/:id',
+          name: 'channel',
+          component: channel
+        },
+        {
+          path:'discovery',
+          name: 'discovery',
+          component: discovery
         }
       ]
     },
@@ -55,6 +73,11 @@ export default new Router({
           component: register
         }
       ]
+    },
+    {
+      path: '/test',
+      name: 'test',
+      component: test
     },
     {
       path: '/NotFound',

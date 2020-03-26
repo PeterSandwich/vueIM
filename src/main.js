@@ -5,14 +5,20 @@ import App from './App'
 import router from './router'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import store from './store'
 Vue.use(ElementUI);
 
 Vue.config.productionTip = false
+import _ from 'lodash'
+
 
 /* eslint-disable no-new */
 new Vue({
   el: '#app',
   router,
+  store,
+  _,
   components: { App },
   template: '<App/>'
 })
+
