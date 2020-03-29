@@ -151,14 +151,23 @@
                     </div>
                 </div>
                 </transition>
-            
-
         </el-dialog>
+            <el-dialog title="收货地址" 
+            :visible.sync="isConnecting"
+            :fullscreen="true"
+            class="connecting"
+            :close-on-press-escape="false"
+            >
+                <global-home-loading></global-home-loading>
+            </el-dialog>
+        
     </div>
 </template>
 
 <script>
 import { mapGetters } from 'vuex';
+import home_loading from './common/home_loading'
+import butif_loading from './common/butif_loading'
 export default {
     name: 'home',
     data: function () {
@@ -168,7 +177,8 @@ export default {
             opendelay: 100,
             dialogTableVisible: false,
             add_server: 0,
-            create_server_input: ""
+            create_server_input: "",
+            isConnecting: true
         }
     },
     computed: {
@@ -212,6 +222,14 @@ export default {
             })
             this.dialogTableVisible = false
         }
+    },
+    components:{
+        'global-home-loading':butif_loading
+    },
+    mounted: function(){
+        setTimeout(()=>{
+            this.isConnecting = false
+        }, 1000)
     }
 }
 </script>
@@ -587,6 +605,7 @@ svg{
     padding-right: 4px;
     font-size: 16px;
     font-weight: 500;
+
 }
 .hdcb_input>p{
     font-size: 11px;
@@ -602,6 +621,7 @@ svg{
     line-height: 40px ;
     color: #2f3136;
     font-weight: bold;
+    background-color: inherit;
 }
 
 .h_dialog_join{
@@ -613,4 +633,26 @@ svg{
     font-size: 12px;
 }
 input::-webkit-input-placeholder { color: rgba(184, 184, 184, 0.692);}
+
+ 
+.connecting{
+    width: 100%;
+    height: 100%;
+    background-color: violet;
+}
+.connecting .el-dialog{
+    width: 100%;
+    height: 100%;
+    max-width: unset;
+    border-radius: unset;
+   
+}
+.connecting .el-dialog__body{
+    padding: unset;
+    width: 100%;
+    height: 100%;
+}
+.connecting .el-dialog__header{
+    display: none;
+}
 </style>

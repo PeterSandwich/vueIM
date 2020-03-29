@@ -1,19 +1,43 @@
 <template>
 <div>
     <div class="test_container">
-        <user-head style="width: 32px;height: 32px;" v-bind:with_status="true" v-bind:user_status="1" v-bind:bg_color="'#fff'"></user-head>
-        <user-head style="width: 32px;height: 32px;" v-bind:with_status="true" v-bind:user_status="2" v-bind:bg_color="'#fff'"></user-head>
-        <user-head style="width: 32px;height: 32px;" v-bind:with_status="true" v-bind:user_status="3" v-bind:bg_color="'#fff'"></user-head>
-        <user-head style="width: 32px;height: 32px;" v-bind:with_status="true" v-bind:user_status="4" v-bind:bg_color="'#fff'"></user-head>
+        <video ref="localVideo" autoplay playsinline></video>
+        <button @click="open_video()">open video</button>
+        <button @click="video_info()">video_info</button>
     </div>
 </div>
 </template>
 <script>
-import myhead from './common/myhead'
+
 export default {
     name: 'test',
-    components:{
-        'user-head': myhead
+    methods:{
+        open_video(){
+                const mediaStreamContrains = {
+                video:{
+                    frameRate: {min:30},
+                    width: {min: 640, ideal: 1280},
+                    height: {min:360, ideal: 720},
+                    aspectRate: 16/9
+                }
+            }
+
+            navigator.mediaDevices.getUserMedia(mediaStreamContrains).then(
+                (mediaStream) => {this.$refs.localVideo.srcObject = mediaStream}
+            ).catch(
+                (error)=>{console.log('navigator.getUserMedia error:', error)}
+            )
+        },
+        video_info(){
+            navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
+                deviceInfos.forEach(function(deviceInfo){
+                    console.log(deviceInfo.kind+":"+deviceInfo.label+":"+deviceInfo.deviceId)
+                })
+            }).catch(
+                (err)=>{
+                console.log(err.name+":"+err.message)
+            })
+        }
     }
     
 }

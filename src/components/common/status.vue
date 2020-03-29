@@ -11,9 +11,6 @@
 import {ONLINE,IDLE,NOTDISTURB,STEALTH} from './mycommon.js';
 export default {
     name:'status',
-    mounted: function(){
-        console.log(this.now_status)
-    },
     data: function(){
         return {
             status:{

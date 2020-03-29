@@ -82,34 +82,64 @@
                         
                         <div v-if="changing_status" class="sideBar_me_change_status">
                             <div class="sideBar_me_change_status_item" @click="change_status(1)" :class="{sideBar_me_change_status_item_active:me_status==1}">
-                                <div class="smci_1">
-                                    <user-status style="width: 20px;height: 20px;" :now_status="1"></user-status>
+                                <div class="smci_0">
+                                    <div class="smci_1">
+                                        <user-status style="width: 14px;height: 14px;" :now_status="1"></user-status>
+                                    </div>
+                                    <div class="smci_2">在线</div>
                                 </div>
-                                <div class="smci_2">在线</div>
                             </div>
+                            <div class="sideBar_me_change_status_slash"></div>
                             <div class="sideBar_me_change_status_item" @click="change_status(2)" :class="{sideBar_me_change_status_item_active:me_status==2}">
-                                 <div class="smci_1">
-                                    <user-status style="width: 20px;height: 20px;" :now_status="2"></user-status>
-                                </div>
-                                <div class="smci_2">闲置</div>
+                                 <div class="smci_0">
+                                    <div class="smci_1">
+                                        <user-status style="width: 14px;height: 14px;" :now_status="2"></user-status>
+                                    </div>
+                                    <div class="smci_2">闲置</div>
+                                 </div>
                             </div>
                             <div class="sideBar_me_change_status_item" @click="change_status(3)" :class="{sideBar_me_change_status_item_active:me_status==3}">
-                                <div class="smci_1">
-                                    <user-status style="width: 20px;height: 20px;" :now_status="3"></user-status>
+                                <div class="smci_0">
+                                    <div class="smci_1">
+                                        <user-status style="width: 14px;height: 14px;" :now_status="3"></user-status>
+                                    </div>
+                                    <div class="smci_2">请勿打扰</div>
                                 </div>
-                                <div class="smci_2">请勿打扰</div>
+                                <p>您将不会受到任何桌面通知。</p>
                             </div>
                             <div class="sideBar_me_change_status_item" @click="change_status(0)" :class="{sideBar_me_change_status_item_active:me_status==0}">
-                                <div class="smci_1">
-                                    <user-status style="width: 20px;height: 20px;" :now_status="0"></user-status>
+                                <div class="smci_0">
+                                    <div class="smci_1">
+                                        <user-status style="width: 14px;height: 14px;" :now_status="0"></user-status>
+                                    </div>
+                                    <div class="smci_2">隐身</div>
                                 </div>
-                                <div class="smci_2">隐身</div>
+                                <p>您将不会显示在线，但可以使用所有功能。</p>
+                            </div>
+                            <div class="sideBar_me_change_status_slash"></div>
+                            <div class="sideBar_me_change_status_item"  @click="dialogStatusVisible=true">
+                                 <div class="smci_0">
+                                     <div v-if="me_base.me_sd_status_exsit" class="smci_0">
+                                        <div class="smci_1 smci_3">
+                                            {{me_base.me_sd_status}}
+                                        </div>
+                                        <div>
+                                            <svg @click="clear_status()" t="1585471045811" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="27256" width="16" height="16"><path d="M512 32C246.4 32 32 246.4 32 512s214.4 480 480 480 480-214.4 480-480S777.6 32 512 32m201.6 681.6c-12.8 12.8-35.2 12.8-48 0L512 560 358.4 713.6c-12.8 12.8-35.2 12.8-48 0-12.8-12.8-12.8-35.2 0-48L464 512 310.4 358.4c-12.8-12.8-12.8-35.2 0-48 12.8-12.8 35.2-12.8 48 0L512 464l153.6-153.6c12.8-12.8 35.2-12.8 48 0 12.8 12.8 12.8 35.2 0 48L560 512l153.6 153.6c16 12.8 16 35.2 0 48m0 0z" p-id="27257" fill="#bfbfbf"></path></svg>
+                                        </div>
+                                     </div>
+                                     <div v-else class="smci_0">
+                                        <div class="smci_1">
+                                            😁
+                                        </div>
+                                        <div class="smci_2">设置自定义状态</div>
+                                     </div>
+                                 </div>
                             </div>
                         </div>
                     </div>
                     <div class="sideBar_me_info">
-                        <div class="sideBar_me_info_name">Captain Seagullkkkk</div>
-                        <div class="sideBar_me_info_num">#2234</div>
+                        <div class="sideBar_me_info_name">{{me_base.me_name}}</div>
+                        <div class="sideBar_me_info_num">#{{me_base.me_fixid}}</div>
                     </div>
                     <div class="sideBar_me_setting">
                         <div @click="$store.commit('switch_microphone')">
@@ -163,6 +193,61 @@
                 </div>
             </div>
         </el-dialog>
+        <template >
+            <el-dialog class="status_dialog" top="25vh" width="440" :visible.sync="dialogStatusVisible">
+                <div class="me_s_d_c">
+                    <div class="me_s_d_c_img">
+                        <img src="../assets/undraw_home_cinema_l7yl.svg">
+                    </div>
+                    <div  class="me_s_d_c_head">
+                        <div>
+                            <svg @click="dialogStatusVisible=false" t="1584688386695" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2639" width="16" height="16"><path d="M604.010237 516.920604 1003.934137 116.996704C1030.645959 90.284883 1030.645959 46.861051 1003.934137 20.14923 977.153827-6.631082 933.798482-6.631082 907.086661 20.14923L507.162763 420.07313 116.964706 29.875073C90.252885 3.163252 46.829053 3.163252 20.117232 29.875073-6.66308 56.655385-6.66308 100.010725 20.117232 126.722546L410.31529 516.920604 35.322423 891.913471C8.54211 918.625293 8.54211 962.049126 35.322423 988.760942 62.034243 1015.541258 105.389583 1015.541258 132.169896 988.760942L507.162763 613.768077 891.881473 998.486785C918.593295 1025.267102 961.948633 1025.267102 988.728944 998.486785 1015.50926 971.774963 1015.50926 928.419625 988.728944 901.639315L604.010237 516.920604Z" p-id="2640" fill="#b9bbbe"></path></svg>
+                            <h5>设置自定义状态</h5>
+                        </div>
+                    </div>
+                    <div class="me_s_d_c_item">
+                        <p>在忙什么呢，{{me_base.me_name}}？</p>
+                        <div class="me_s_d_c_item_input me_s_d_c_item_input_1">
+                            <div>
+                                <el-popover
+                                placement="left-end"
+                                width="400"
+                                :visible-arrow="false"
+                                trigger="click"
+                                v-model="status_dialog_visible">
+                                <input-emoji v-on:emj="self_df_status_emj=$event;status_dialog_visible=false"></input-emoji>
+                                <div slot="reference">
+                                    <h5  v-if="self_df_status_emj">{{self_df_status_emj}}</h5>
+                                    <svg v-else t="1585470977059" class="icon" viewBox="0 0 1029 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="25586" width="22" height="22"><path d="M441.638766 380.342857c0 43.885714-36.571429 80.457143-80.457143 80.457143-43.885714 0-80.457143-36.571429-80.457143-80.457143 0-43.885714 36.571429-80.457143 80.457143-80.457143 43.885714 0 80.457143 36.571429 80.457143 80.457143m307.2 0c0 43.885714-36.571429 80.457143-80.457143 80.457143-43.885714 7.314286-80.457143-29.257143-80.457143-80.457143 0-43.885714 36.571429-80.457143 80.457143-80.457143 43.885714 0 80.457143 36.571429 80.457143 80.457143m14.628571 270.628572c-21.942857 109.714286-138.971429 190.171429-248.685714 190.171428-117.028571 0-226.742857-80.457143-248.685714-190.171428 0-29.257143 21.942857-43.885714 36.571428-43.885715h424.228572c7.314286 0 43.885714 0 36.571428 43.885715M514.781623 73.142857c226.742857 0 409.6 168.228571 438.857143 394.971429 21.942857 241.371429-146.285714 460.8-387.657143 482.742857h-43.885714c-226.742857 0-409.6-168.228571-438.857143-394.971429-29.257143-241.371429 146.285714-453.485714 387.657143-482.742857H514.781623m0-73.142857h-51.2C178.32448 36.571429-26.47552 285.257143 2.781623 563.2 32.038766 826.514286 258.781623 1024 514.781623 1024h58.514286c277.942857-29.257143 482.742857-285.257143 453.485714-563.2C997.52448 197.485714 770.781623 0 514.781623 0" p-id="25587" fill="#bfbfbf"></path></svg>
+                                </div>
+                                </el-popover>
+                            </div>
+                            <input v-model="self_df_status_msg" />
+                            <div>
+                                <svg v-if="is_self_df_status" @click="self_df_status_msg='';self_df_status_emj=''" t="1585471045811" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="27256" width="18" height="18"><path d="M512 32C246.4 32 32 246.4 32 512s214.4 480 480 480 480-214.4 480-480S777.6 32 512 32m201.6 681.6c-12.8 12.8-35.2 12.8-48 0L512 560 358.4 713.6c-12.8 12.8-35.2 12.8-48 0-12.8-12.8-12.8-35.2 0-48L464 512 310.4 358.4c-12.8-12.8-12.8-35.2 0-48 12.8-12.8 35.2-12.8 48 0L512 464l153.6-153.6c12.8-12.8 35.2-12.8 48 0 12.8 12.8 12.8 35.2 0 48L560 512l153.6 153.6c16 12.8 16 35.2 0 48m0 0z" p-id="27257" fill="#bfbfbf"></path></svg>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="me_s_d_c_item">
+                        <p>在此时间后清除</p>
+                        <div class="me_s_d_c_item_input me_s_d_c_item_input_2" @click="status_time_downlist=!status_time_downlist">
+                            {{status_time_downlist_value.dsc}}
+                        </div>
+                        <span class="me_s_d_c_item_input_downlist" v-if="status_time_downlist">
+                            <div :class="{me_s_d_c_item_input_downlist_active: status_time_downlist_value.num==0}" @click="status_time_downlist_value.num=0;status_time_downlist_value.dsc='今天';status_time_downlist=false">今天</div>
+                            <div :class="{me_s_d_c_item_input_downlist_active: status_time_downlist_value.num==30}" @click="status_time_downlist_value.num=30;status_time_downlist_value.dsc='30 分钟';status_time_downlist=false">30 分钟</div>
+                            <div :class="{me_s_d_c_item_input_downlist_active: status_time_downlist_value.num==120}" @click="status_time_downlist_value.num=120;status_time_downlist_value.dsc='2 小时';status_time_downlist=false">2 小时</div>
+                            <div :class="{me_s_d_c_item_input_downlist_active: status_time_downlist_value.num==240}" @click="status_time_downlist_value.num=240;status_time_downlist_value.dsc='4 小时';status_time_downlist=false">4 小时</div>
+                            <div :class="{me_s_d_c_item_input_downlist_active: status_time_downlist_value.num==-1}" @click="status_time_downlist_value.num=-1;status_time_downlist_value.dsc='不要清空';status_time_downlist=false">不要清空</div> 
+                        </span>
+                    </div>
+                    <div class="me_s_d_c_footer">
+                        <button @click="save_status()">保存</button>
+                        <button @click="dont_save_status()">取消</button>
+                    </div>
+                </div>
+            </el-dialog>
+        </template>
     </div>
 </template>
 
@@ -170,15 +255,25 @@
 import {mapState,mapGetters} from 'vuex';
 import myhead from './common/myhead.vue';
 import status from './common/status.vue';
+import emoji from './chat/emoji'
 export default {
     name: 'master',
     data: function(){
         return {
             head_hover: false,
+            dialogStatusVisible: false,
             dialogSettingVisible: false,
             changing_status: false,
             sideBar_select_hover: -1,
-            sideBar_select_select: 'friend'
+            sideBar_select_select: 'friend',
+            self_df_status_emj: '',
+            self_df_status_msg: '',
+            status_dialog_visible: false,
+            status_time_downlist: false,
+            status_time_downlist_value:{
+                num: 0,
+                dsc: '今天'
+            }
         }
     },
     created: function(){
@@ -193,6 +288,29 @@ export default {
       
     },
     methods:{
+        clear_status(){
+            this.$store.commit('clear_status')
+            event.stopPropagation()
+            this.self_df_status_emj = '',
+            this.self_df_status_msg ='',
+            this.status_time_downlist_value ={
+                num: 0,
+                dsc: '今天'
+            }
+        },
+        save_status(){
+            this.dialogStatusVisible = false
+            this.$store.commit('set_sd_status', {
+                msg:this.self_df_status_emj+this.self_df_status_msg,
+                keep_time:this.status_time_downlist_value.num
+            })
+        },
+        dont_save_status(){
+            this.dialogStatusVisible = false
+            this.self_df_status_emj = ''
+            this.self_df_status_msg = ''
+            
+        },
         selectActive:function(path){
             
             const vpath = path.split('/')
@@ -250,14 +368,20 @@ export default {
         }
     },
     computed: {
+        is_self_df_status(){
+            return this.self_df_status_emj||this.self_df_status_msg
+        },
         me_open_microphone(){
-            return this.$store.state.home.me_open_microphone
+            return this.$store.state.me.me_open_microphone
         },
         me_open_earphone(){
-            return this.$store.state.home.me_open_earphone
+            return this.$store.state.me.me_open_earphone
+        },
+        me_base(){
+            return this.$store.state.me.base
         },
         me_status(){
-            return this.$store.state.home.me_status
+            return this.me_base.me_status
         },
         ...mapGetters([
                 'getChatList'
@@ -271,7 +395,8 @@ export default {
     },
     components: {
         'user-head':myhead,
-        'user-status': status
+        'user-status': status,
+        'input-emoji': emoji
     }
         
 }
@@ -476,10 +601,10 @@ svg{
 
 .sideBar_me_change_status{
     position: absolute;
-    width: 224px;
-    bottom: 42px;
+    width: 220px;
+    bottom: 44px;
     left: 0;
-    padding: 5px 10px 5px 9px;
+    /* padding: 5px 10px 5px 9px; */
     transition: transform .12s ease-out,opacity .12s ease-out,-webkit-transform .12s ease-out;
     -webkit-transform: scale(1);
     transform: scale(1);
@@ -491,29 +616,56 @@ svg{
     flex-direction: column;
 }
 
+.sideBar_me_change_status_slash{
+    /* width: 100%; */
+    height: 1px;
+    background-color: rgba(88, 88, 88, 0.171);
+    margin: 4px 8px;
+}
+
 .sideBar_me_change_status_item{
-    height: 38px;
+    
+    min-height: 32px;
+    border-radius: 4px;
+    margin: 2px 2px;
+}
+.sideBar_me_change_status_item>p{
+    font-size: 11px;
+    color: #72767d;
+    padding-left: 30px;
+    margin: unset;
+    margin-top: -7px;
+    margin-bottom: 2px;
+}
+.smci_0{
+    width: 100%;
+    min-height: 32px;
+    line-height: 14px;
     display: flex;
     align-items: center;
     flex-direction: row;
-    margin: 2px 6px;
-    border: 1px solid rgba(94, 94, 94, 0.315);
-    border-radius: 4px;
-
 }
+
 .sideBar_me_change_status_item_active{
     background-color: rgba(94, 94, 94, 0.315);
 }
 .sideBar_me_change_status_item:hover{
      background-color: rgba(128, 128, 128, 0.315);
 }
+
 .smci_1{
-    margin: 0px 16px;
+    margin: 0px 8px;
     
+}
+.smci_3_active{
+     background-color: rgba(128, 128, 128, 0.315);
 }
 .smci_2{
     font-size: 14px;
-    font-weight: bold;
+    color: honeydew;
+}
+.smci_2_ex>h6{
+    font-size: 14px;
     color: honeydew;
 }
 .sideBar_select_h{
@@ -567,13 +719,15 @@ svg{
 }
 .el-popover {
     background-color: #36393f;
-    border: 1px solid #16181a;
+    border: unset;
     padding: unset;
 }
 
 .maspop_can{
     min-height: 350px;
     max-height: 500px;
+     border: 1px solid #16181a;
+     border-radius: 4px;
     /* background-color: #2754ad; */
     display: flex;
     flex-direction: column;
@@ -770,6 +924,7 @@ svg{
 .msdb_2{
     position: relative;
 }
+
 .master_setting_dialog_close{
     position: absolute;
     width: 80px;
@@ -789,5 +944,179 @@ svg{
     text-align: center;
     color: #72767d;
     font-size: 14px;
+}
+
+.status_dialog .el-dialog{
+    width: 440px;
+    height: unset;
+    border-radius: 6px;
+}
+
+.me_s_d_c{
+    position: relative;
+    color: white;
+    background-color: #36393f;
+    border-radius: 4px;
+}
+
+.me_s_d_c_img>img{
+    width: 160px;
+    height: 160px;
+}
+.me_s_d_c_img{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    position: absolute;
+    top: -80px;
+}
+
+.me_s_d_c_head{
+    height: 116px;
+    padding: 20px;
+    position: relative;
+    text-align: right;
+}
+.me_s_d_c_head h5{
+    position: absolute;
+    bottom: 0px;
+    width:400px;
+    text-align: center;
+}
+.me_s_d_c_item{
+    position: relative;
+    height: 64px;
+    margin: 0px 12px 20px 20px;
+}
+.me_s_d_c_item>div{
+    height: 40px;
+    width: 100%;
+    border: 1px solid #040405c9;
+    background-color: rgba(0, 0, 0, 0.199);
+    border-radius: 3px;
+}
+.me_s_d_c_item>p{
+    color: #8e9297;
+    margin-bottom: 8px;
+font-size: 12px;
+    line-height: 16px;
+    font-weight: bold;
+}
+.me_s_d_c_footer{
+    height: 78px;
+    background-color: #2f3136;
+    border-bottom-right-radius: 4px ;
+    border-bottom-left-radius: 4px;
+    padding: 20px;
+    display: flex;
+    flex-direction: row-reverse;
+}
+.me_s_d_c_footer>button{
+    cursor: pointer;
+    outline: none;
+    border: unset;
+    width: 96px;
+    height: 38px;
+    border-radius: 2px;
+    background-color: inherit; 
+    color: rgb(224, 224, 224);
+    font-size: 14px;
+    /* margin-right: 5px; */
+}
+.me_s_d_c_footer>button:first-child{
+    background-color: rgb(40, 112, 194);    
+}
+.me_s_d_c_footer>button:first-child:hover{
+    background-color: rgb(45, 127, 221);    
+}
+.me_s_d_c_footer>button:last-child:hover{
+    text-decoration: underline;
+    background-color: rgba(221, 124, 45, 0.267);    
+}
+.me_s_d_c_item_input_1{
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+
+}
+.me_s_d_c_item_input_1>div:first-child{
+    width: 42px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.me_s_d_c_item_input_1>input{
+    flex: 1;
+    outline: none;
+    border: unset;
+    background-color: rgba(0, 0, 0, 0);;
+    padding: 0px 2px;
+    color: rgb(197, 197, 197);
+}
+.me_s_d_c_item_input_1>div:last-child{
+    width: 36px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.me_s_d_c_item_input_1 h5{
+    margin-top: 4px;
+    font-size: 22px;
+}
+.me_s_d_c_item_input_downlist{
+    display: block;
+    position: absolute;
+    width: 100%;
+    background-color: #2b2e32;
+    height: 156px;
+    overflow-y:scroll;
+}
+.me_s_d_c_item_input_downlist>div{
+    height: 40px;
+    margin: 2px;
+    color: rgb(206, 206, 206);
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 40px;
+    padding-left: 10px;
+}
+.me_s_d_c_item_input_downlist>div:hover{
+    background-color: rgba(102, 102, 102, 0.24);
+}
+
+
+.me_s_d_c_item_input_downlist::-webkit-scrollbar{
+    width: 4px;
+    border-radius: 8px;
+}
+
+.me_s_d_c_item_input_downlist::-webkit-scrollbar-thumb{
+    border-radius: 8px;
+    width: 4px;
+    box-shadow: 4px 0 0 #676768 inset;
+
+}
+.me_s_d_c_item_input_downlist_active{
+    background-color: rgba(102, 102, 102, 0.432);
+}
+.me_s_d_c_item_input_2{
+    font-size: 16px;
+    font-weight: bold;
+    line-height: 40px;
+    padding-left: 10px;
+}
+.smci_3{
+    font-size: 13px;
+    color: rgb(207, 207, 207);
+    width: 100%;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.smci_3:first-child{
+    width: 80%;
+}
+.smci_3:last-child{
+    width: 20%;
 }
 </style>

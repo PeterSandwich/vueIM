@@ -2,25 +2,43 @@
     <div class="all_container">
         <div  class="all_container_nx">
             <div v-if="ok" class="all_container_in">
-                <div class="all_cantainer_list_item_head">全部好友数-{{count}}</div>
-                <div class="all_cantainer_list_item" v-for="i in count" v-bind:key='i.id'>
+                <div class="all_cantainer_list_item_head">全部好友数-{{friend_list_count}}</div>
+                <div class="all_cantainer_list_item" v-for="friend in friend_list" v-bind:key='friend.uid'>
                     <div class="all_cantainer_list_item_info">
                         <div class="all_cantainer_list_item_img">
-                                <img src="https://images.unsplash.com/photo-1584111768652-a2f4eb2120da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" />
-                                <div class="sideBar_me_head_satus"></div>
+                            <all-friend-head style="width: 36px;height: 36px;" :headimg="friend.headimg" v-bind:bg_color="'#2f3136'" v-bind:with_status="true"  v-bind:user_status="friend.status"></all-friend-head>
                         </div>
                         <div class="all_cantainer_list_item_name">
-                            <div class="all_cantainer_list_item_name_1">nxo<span>#1234</span></div>
-                            <div>收到的好友请求</div>
+                            <div class="all_cantainer_list_item_name_1">{{friend.username}}<span>#{{friend.fixid}}</span></div>
+                            <div>[{{user_status_cn(friend.status)}}]<span v-if="friend.sd_status&&friend.status>=1&&friend.status<=3">..{{friend.sd_status}}</span></div>
                         </div>
                     </div>
                     <div class="all_cantainer_list_item_action">
-                        <div class="all_cantainer_list_item_action_com all_cantainer_list_item_action_del">
-                            <svg t="1584688386695" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2639" width="14" height="14"><path d="M604.010237 516.920604 1003.934137 116.996704C1030.645959 90.284883 1030.645959 46.861051 1003.934137 20.14923 977.153827-6.631082 933.798482-6.631082 907.086661 20.14923L507.162763 420.07313 116.964706 29.875073C90.252885 3.163252 46.829053 3.163252 20.117232 29.875073-6.66308 56.655385-6.66308 100.010725 20.117232 126.722546L410.31529 516.920604 35.322423 891.913471C8.54211 918.625293 8.54211 962.049126 35.322423 988.760942 62.034243 1015.541258 105.389583 1015.541258 132.169896 988.760942L507.162763 613.768077 891.881473 998.486785C918.593295 1025.267102 961.948633 1025.267102 988.728944 998.486785 1015.50926 971.774963 1015.50926 928.419625 988.728944 901.639315L604.010237 516.920604Z" p-id="2640" fill="#dbdbdb"></path></svg>
+                        <el-tooltip class="item" effect="dark" content="更多" placement="top" :enterable="false" transition="el-zoom-in-top">
+                        <el-popover
+                            placement="right-start"
+                            width="10"
+                            trigger="click"
+                            :visible-arrow="false"
+                            >
+                            <div class="all_cantainer_list_item_action_del_select_w">
+                                <div class=" all_cantainer_list_item_action_del_select">
+                                <div> 开始语言通话</div>
+                                <div> 开始视频通话</div>
+                                <div> 删除好友</div>
+                            </div>
+                            </div>
+                            
+                        <div slot="reference" class="all_cantainer_list_item_action_com all_cantainer_list_item_action_del">
+                            <svg t="1585450365270" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="24664" width="16" height="16"><path d="M386.133333 168.533333c0 68.266667 55.466667 125.866667 125.866667 125.866667 68.266667 0 125.866667-55.466667 125.866667-125.866667C637.866667 98.133333 580.266667 42.666667 512 42.666667s-125.866667 55.466667-125.866667 125.866666zM386.133333 857.6c0 68.266667 55.466667 123.733333 123.733334 123.733333 68.266667 0 123.733333-55.466667 123.733333-123.733333 0-68.266667-55.466667-123.733333-123.733333-123.733333-68.266667 2.133333-123.733333 55.466667-123.733334 123.733333zM386.133333 512c0 68.266667 55.466667 125.866667 125.866667 125.866667 68.266667 0 125.866667-55.466667 125.866667-125.866667 0-68.266667-55.466667-125.866667-125.866667-125.866667-68.266667 2.133333-125.866667 57.6-125.866667 125.866667z" p-id="24665" class="a_f_n_icon"></path></svg>
                         </div>
-                        <div class="all_cantainer_list_item_action_com all_cantainer_list_item_action_access">
-                            <svg t="1584689247436" class="icon" viewBox="0 0 1196 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="4208" width="14" height="14"><path d="M141.93624 417.289101a85.332053 85.332053 0 1 0-110.249013 130.216713L422.849359 878.935509a85.332053 85.332053 0 0 0 120.318196-10.239846L1159.26498 140.642584A85.332053 85.332053 0 1 0 1028.877602 30.222907L467.904684 693.423625 141.93624 417.289101z" p-id="4209" fill="#dbdbdb" ></path></svg>
-                        </div> 
+                        </el-popover>
+                        </el-tooltip>
+                        <el-tooltip class="item" effect="dark" content="消息" placement="top" :enterable="false" transition="el-zoom-in-top">
+                            <div class="all_cantainer_list_item_action_com all_cantainer_list_item_action_access">
+                                <svg t="1585450257461" class="icon" viewBox="0 0 1097 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="23141" width="18" height="16"><path d="M932.571 36.571h-768A90.697 90.697 0 0 0 73.143 128v581.486a91.429 91.429 0 0 0 91.428 95.085H321.83V936.23a50.103 50.103 0 0 0 51.2 51.2 65.097 65.097 0 0 0 36.57-14.63l168.229-168.229h351.085a90.697 90.697 0 0 0 91.429-91.428V128a85.577 85.577 0 0 0-87.772-91.429zM661.943 577.83H266.97a47.543 47.543 0 0 1 0-95.086h394.972a47.543 47.543 0 0 1 0 95.086zM830.17 358.4h-563.2a46.08 46.08 0 0 1-47.542-47.543 48.274 48.274 0 0 1 47.542-47.543h563.2a48.274 48.274 0 0 1 47.543 47.543A46.08 46.08 0 0 1 830.17 358.4z" class="a_f_y_icon" p-id="23142"></path></svg>
+                            </div> 
+                        </el-tooltip>
                     </div>
                 </div>
             </div>
@@ -29,6 +47,7 @@
 </template>
 
 <script>
+import myhead from '../common/myhead.vue';
 export default {
     name: 'friend_all',
     data: function(){
@@ -36,6 +55,30 @@ export default {
             ok: true,
             count: 15
         }
+    },
+    methods:{
+        user_status_cn(s){
+            if(s==1){
+                return "在线"
+            }else if(s==2){
+                return "闲置"
+            }else if(s==3){
+                return "请勿打扰"
+            }else{
+                return "离线"
+            }
+        }
+    },
+    computed: {
+        friend_list(){
+            return this.$store.state.myfriends.friends
+        },
+        friend_list_count(){
+            return this.$store.state.myfriends.friends.length
+        }
+    },
+    components:{
+        'all-friend-head': myhead
     }
 }
 </script>
@@ -101,11 +144,7 @@ export default {
     margin-right: 12px;
     
 }
-.all_cantainer_list_item_img img{
-    width: 32px;
-    height: 32px;
-    border-radius: 50px;
-}
+
 .all_cantainer_list_item_action{
     display: flex;
     flex-direction: row-reverse;
@@ -133,12 +172,42 @@ export default {
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
-    color: #fff;
+    color: rgb(235, 235, 235);
     font-weight: 600;
 }
 .all_cantainer_list_item_name_1 span{
     color: #b9bbbe;
     font-size: 12px;
     display: none;
+}
+
+.all_cantainer_list_item_action_del_select_w{
+    background-color: black;
+    padding: 5px;
+    border-radius: 4px;
+}
+
+.all_cantainer_list_item_action_del_select>div{
+    border-radius: 4px;
+    line-height: 30px;
+    color: rgb(202, 202, 202);
+    margin: 0px 5px;
+    text-align:center;
+}
+.all_cantainer_list_item_action_del_select>div:hover{
+    background-color: rgba(97, 97, 97, 0.418);
+}
+.all_cantainer_list_item_action_del_select>div:last-child{
+    color: red;
+}
+.a_f_y_icon,.a_f_n_icon{
+    fill: #dbdbdb;
+}
+
+.all_cantainer_list_item_action_del:hover .a_f_n_icon{
+    fill: #ffc760;
+}
+.all_cantainer_list_item_action_access:hover .a_f_y_icon{
+    fill: #ffc760;
 }
 </style>

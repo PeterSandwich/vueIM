@@ -1,6 +1,6 @@
 <template>
     <div class="hc_container">
-        <img src="https://images.unsplash.com/photo-1584111768652-a2f4eb2120da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80" />
+        <img :src="headimg?headimg:default_head" />
         <div class="hc_satus" ref="bg_status" v-if="with_status">
             <head-status class="hc_satus_icon" v-bind:now_status="hstatus"></head-status>
         </div>
@@ -13,25 +13,33 @@ export default {
     props: [
         'bg_color',
         'with_status',
-        'user_status'
+        'user_status',
+        'headimg'
     ],
     data: function(){
         return {
-            hstatus: 4
+            hstatus: 4,
+            default_head: 'https://images.unsplash.com/photo-1584111768652-a2f4eb2120da?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=634&q=80'
         }
     },
     components:{
         'head-status': status
     },
     mounted: function(){
-        this.$refs.bg_status.setAttribute('style',`background-color:${this.bg_color}`)
-        if(this.user_status){
-            this.hstatus = this.user_status
+        if(this.with_status){
+            this.$refs.bg_status.setAttribute('style',`background-color:${this.bg_color}`)
+            if(this.user_status){
+                this.hstatus = this.user_status
+            }
         }
+        
+        
     },
     watch: {
         bg_color:function(){
-            this.$refs.bg_status.setAttribute('style',`background-color:${this.bg_color}`)
+            if(this.with_status){
+                this.$refs.bg_status.setAttribute('style',`background-color:${this.bg_color}`)
+            }
         },
         user_status: function(){
             this.hstatus = this.user_status
