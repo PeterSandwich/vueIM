@@ -1,42 +1,35 @@
 <template>
 <div>
     <div class="test_container">
-        <video ref="localVideo" autoplay playsinline></video>
-        <button @click="open_video()">open video</button>
-        <button @click="video_info()">video_info</button>
-    </div>
+        <div class="c1"></div>
+        <div class="c2">
+             <mutliline-input ref="mip" @send="sendtext($event)"></mutliline-input>
+        </div>
+        <div></div>
+        <!-- <mutliline-input @input="text($event)" :value="searchText"></mutliline-input> -->
+       </div>
+
+    <button @click="add()">add</button>
 </div>
 </template>
 <script>
-
+import mutliline_input from "./common/mutliline_input"
 export default {
     name: 'test',
+    data: function(){
+        return {
+            searchText: ""
+        }
+    },
+    components:{
+        'mutliline-input':mutliline_input
+    },
     methods:{
-        open_video(){
-                const mediaStreamContrains = {
-                video:{
-                    frameRate: {min:30},
-                    width: {min: 640, ideal: 1280},
-                    height: {min:360, ideal: 720},
-                    aspectRate: 16/9
-                }
-            }
-
-            navigator.mediaDevices.getUserMedia(mediaStreamContrains).then(
-                (mediaStream) => {this.$refs.localVideo.srcObject = mediaStream}
-            ).catch(
-                (error)=>{console.log('navigator.getUserMedia error:', error)}
-            )
+        sendtext(e){
+            console.log('send',e)
         },
-        video_info(){
-            navigator.mediaDevices.enumerateDevices().then(function(deviceInfos){
-                deviceInfos.forEach(function(deviceInfo){
-                    console.log(deviceInfo.kind+":"+deviceInfo.label+":"+deviceInfo.deviceId)
-                })
-            }).catch(
-                (err)=>{
-                console.log(err.name+":"+err.message)
-            })
+        add(){
+            this.$refs.mip.addemj('😁')
         }
     }
     
@@ -44,10 +37,18 @@ export default {
 </script>
 <style>
 .test_container{
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    
+    width: 100%;
+    height: 100%;
+   display: grid;
+    grid-template-columns: 42px auto 1px;
 }
-
+.c1{
+    height: 50px;
+    background-color: maroon;
+}
+.c2{
+    height: 500px;
+    background-color: rgb(238, 77, 77);
+    overflow-x: hidden;
+}
 </style>

@@ -12,7 +12,8 @@ import friend from '@/components/friend/friend'
 import infomation from '@/components/infomation'
 import chat from '@/components/chat/chat'
 import channel from '@/components/channel/channel'
-
+import store from '../store/index'
+import _ from 'lodash'
 Vue.use(Router)
 
 export default new Router({
@@ -40,7 +41,18 @@ export default new Router({
             },{
               path: 'chat/:id',
               name: 'chat',
-              component: chat
+              component: chat,
+              beforeEnter: (to, from, next) => {
+       
+                console.log(store.state.chat_list.clist)
+                if(_.findIndex(store.state.chat_list.clist, function(o) { return o.chat_id == to.params.id; })>=0){
+                  next()
+                }else{
+                  next('/') 
+                }              
+              }
+              
+              
             }
           ]
         },

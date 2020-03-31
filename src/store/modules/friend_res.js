@@ -1,15 +1,6 @@
 export default{
     "friend_list": [
         {
-            "uid": 1606100136,
-            "fixid": 1001,
-            "username": "潘家炜",
-            "headimg": "https://images.unsplash.com/photo-1494236536165-dab4d859818b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60",
-            "email": "TX1606100136@hc.com",
-            "status": 0,
-            "sd_status": "😁正在玩switch"
-        },
-        {
             "uid": 1606100137,
             "fixid": 1002,
             "username": "王鲜",
