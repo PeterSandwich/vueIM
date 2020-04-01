@@ -6,8 +6,8 @@
                     <svg v-if="isgroup" t="1584933506312" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19584" width="22" height="22"><path d="M863.6188448 876.86257813A90.56711147 90.56711147 0 0 0 876.08888853 830.80533333V762.31111147c0-100.1244448-90.9312-186.5955552-222.27626666-226.59982294C706.3779552 485.64906667 739.5555552 412.0576 739.5555552 329.9555552c0-49.5616-12.1059552-96.0284448-33.2231104-136.07822187C801.13208853 200.97706667 876.08888853 289.7692448 876.08888853 398.22222187c0 70.76977813-31.85777813 133.16551147-80.41813333 169.9384896 126.11128853 27.30666667 216.95146667 103.90186667 216.95146667 194.1504v69.0403552a45.51111147 45.51111147 0 0 1-45.5111104 45.51111146h-103.49226667zM375.46666667 557.51111147c-125.65617813 0-227.5555552-112.0483552-227.5555552-250.31111147S249.81048853 56.88888853 375.46666667 56.88888853s227.5555552 112.0483552 227.5555552 250.31111147S501.1228448 557.51111147 375.46666667 557.51111147z m364.08888853 318.80533333a91.02222187 91.02222187 0 0 1-91.02222187 91.02222187H102.4a91.02222187 91.02222187 0 0 1-91.02222187-91.02222187V807.82222187C11.37777813 669.55946667 174.39857813 557.51111147 375.46666667 557.51111147s364.08888853 112.0483552 364.08888853 250.3111104v68.49422293z" p-id="19585" ></path></svg>
                     <svg v-else t="1584756017022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5933" width="22" height="22"><path d="M618.666667 718.933333c21.333333 19.2 49.066667 27.733333 81.066666 27.733334 68.266667 0 123.733333-27.733333 170.666667-81.066667 44.8-53.333333 68.266667-125.866667 68.266667-215.466667 0-108.8-38.4-196.266667-113.066667-264.533333C750.933333 119.466667 652.8 85.333333 531.2 85.333333c-130.133333 0-238.933333 42.666667-322.133333 128C128 300.8 85.333333 407.466667 85.333333 533.333333c0 123.733333 38.4 221.866667 117.333334 296.533334 78.933333 72.533333 179.2 110.933333 302.933333 110.933333 89.6 0 164.266667-12.8 221.866667-38.4v-100.266667c-64 29.866667-132.266667 44.8-209.066667 44.8-100.266667 0-177.066667-27.733333-234.666667-83.2-55.466667-55.466667-85.333333-132.266667-85.333333-228.266666 0-100.266667 32-183.466667 96-253.866667 64-68.266667 142.933333-104.533333 241.066667-104.533333 89.6 0 160 25.6 211.2 76.8 51.2 51.2 74.666667 117.333333 74.666666 198.4 0 59.733333-8.533333 106.666667-25.6 145.066666-17.066667 36.266667-40.533333 55.466667-66.133333 55.466667-25.6 0-38.4-23.466667-38.4-72.533333 0-44.8 8.533333-142.933333 23.466667-290.133334h-113.066667L597.333333 341.333333h-2.133333c-12.8-40.533333-44.8-61.866667-93.866667-61.866666-55.466667 0-102.4 25.6-142.933333 74.666666C320 403.2 298.666667 469.333333 298.666667 548.266667c0 61.866667 14.933333 108.8 42.666666 145.066666 27.733333 34.133333 66.133333 51.2 113.066667 51.2 61.866667 0 104.533333-34.133333 128-100.266666h2.133333c2.133333 32 12.8 57.6 34.133334 74.666666z m-51.2-322.133333c12.8 14.933333 19.2 38.4 19.2 66.133333 0 57.6-8.533333 104.533333-27.733334 140.8-19.2 34.133333-42.666667 53.333333-74.666666 53.333334-21.333333 0-36.266667-8.533333-51.2-27.733334-12.8-19.2-19.2-44.8-19.2-76.8 0-46.933333 8.533333-87.466667 27.733333-123.733333 19.2-36.266667 42.666667-53.333333 74.666667-53.333333 21.333333-2.133333 38.4 6.4 51.2 21.333333z" p-id="5934" ></path></svg>
                 </div>
-                <div>Captain Sealge</div>
-                <div></div>
+                <div>{{friend_info.chat_name}}</div>
+                <div class="chat_header_info_icon_status"><header-status style="width:16px;height:16px" v-if="!friend_info.is_group" :now_status="friend_info.user_status"></header-status></div>
             </div>
             <div class="chat_header_op">
                 <div>
@@ -39,7 +39,7 @@
             <div class="chat_dispaly_area">
                 <div class="chat_win">
                     <div class="chat_win_list" id="data-list-content">
-                        <message v-for="i in 25" v-bind:key="i.id" v-bind:with_head="i%2==1"></message>
+                        <message v-for="m in getMsgList(uid)" v-bind:key="m.msg_id" :msg="m" v-bind:with_head="true"></message>
                     </div>
                 </div>
                 <div class="chat_input">
@@ -47,8 +47,8 @@
                         <div class="chat_input_add">
                             <svg t="1585057976256" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12422" width="32" height="32"><path d="M828.019978 196.517769C743.47749 112.38358 631.108237 66.051345 511.546164 66.051345c-119.55798 0-231.953839 46.332235-316.500421 130.466424C110.468462 280.679587 63.876308 392.630309 63.876308 511.713474c0 119.111818 46.592155 231.027747 131.134643 315.188542 84.547605 84.133166 196.946534 130.467447 316.506561 130.467447 119.56105 0 231.959979-46.334281 316.474838-130.467447 84.61105-84.189448 131.198088-196.140169 131.168412-315.222311C959.190437 392.594493 912.632051 280.679587 828.019978 196.517769L828.019978 196.517769zM735.389278 543.68463 543.525506 543.68463l0 191.863772c0 17.682731-14.325263 31.974225-31.979342 31.974225-17.645892 0-31.973202-14.291494-31.973202-31.974225L479.572962 543.68463 287.711236 543.68463c-17.647939 0-31.972179-14.323217-31.972179-31.971156 0-17.653055 14.32424-31.980365 31.972179-31.980365l191.862749 0L479.573985 287.872407c0-17.647939 14.326287-31.974225 31.973202-31.974225 17.654079 0 31.979342 14.326287 31.979342 31.974225l0 191.860702 191.862749 0c17.681708 0 31.973202 14.32731 31.973202 31.980365C767.36248 529.361413 753.070986 543.68463 735.389278 543.68463L735.389278 543.68463zM735.389278 543.68463" fill="#dbdbdb" p-id="12423"></path></svg>
                         </div>
-                        <div class="chat_input_raw">
-                            <mutliline-input ref="mip"></mutliline-input>
+                        <div class="chat_input_raw" >
+                            <mutliline-input ref="mip" @send="sendMsg($event)" ></mutliline-input>
                             <div class="chat_input_face">
                            
                                 <el-popover
@@ -94,10 +94,12 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'   
 import message from './message'
 import emoji from './emoji'
 import gif from './gif'
 import myhead from '../common/myhead'
+import status from '../common/status'
 import mutliline_input from '../common/mutliline_input'
 import _ from 'lodash'
 export default {
@@ -106,18 +108,60 @@ export default {
         return {
             uid: this.$route.params.id,
             isgroup: this.$route.params.isgroup,
-            ismemside: false
+            ismemside: false,
+            friend_info: {}
         }
+    },
+    updated(){
+       var div = document.getElementById('data-list-content')
+        div.scrollTop = div.scrollHeight
     },
     methods:{
         insertEmoji(e){
             this.$refs.mip.addemj(e)
+            this.$refs.mip.click_to_focus()
+        },
+        get_friend_info(uid){
+            let idx = _.findIndex(this.$store.state.chat_list.clist, (o)=>{ return o.chat_id == uid; })
+            if(idx>=0){
+                this.friend_info = this.$store.state.chat_list.clist[idx]
+            }
+        },
+        sendMsg(e){
+            e = _.replace(e, /<br>/g, '\n')
+            e = _.replace(e, /<\/div>/g, '<div>')
+            e = _.replace(e, /<div><div>/g, '<div>')
+        
+            e = _.split(e, '<div>')
+            let msg = []
+            for(let i of e){
+                if(i.trim()!=""){
+                    msg.push(i)
+                }   
+            }
+
+            //todo sendmsg
+            this.$store.commit('msglist_add',{
+                chat_id: this.uid,
+                msg_type: 'text',
+                timestamp: Date.now(),
+                sender: this.$store.state.me.base.me_id,
+                receiver: this.friend_info.chat_user_id,
+                content: {
+                    text: {
+                        innerText: msg
+                    }
+                }
+            })
         }
     },
     computed:{
         open_memside: function(){
             return this.isgroup && this.ismemside
-        }
+        },
+        ...mapGetters([
+            'getMsgList'
+        ])
     },
     watch: {
         $route(){
@@ -127,12 +171,15 @@ export default {
             if(_.findIndex(this.$store.state.chat_list.clist, (o)=>{ return o.chat_id == this.uid; })<0){
                this.$router.push({name: 'me'}).catch(() => {})
             }
+            this.get_friend_info(this.$route.params.id)
         }
     },
     mounted: function(){
         
         var div = document.getElementById('data-list-content')
         div.scrollTop = div.scrollHeight
+
+        this.get_friend_info(this.$route.params.id)
         
        
     },
@@ -141,7 +188,8 @@ export default {
         'user-head':myhead,
         'input-emoji': emoji,
         'input-gif': gif,
-        'mutliline-input':mutliline_input
+        'mutliline-input':mutliline_input,
+        'header-status': status
     }
     
     
@@ -381,5 +429,8 @@ export default {
 .chat_member_sidebar_list_item_head{
     height: 32px;
     margin-right: 8px;
+}
+.chat_header_info_icon_status{
+    margin-left: 15px;
 }
 </style>

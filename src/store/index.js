@@ -8,6 +8,7 @@ import chat_list from './modules/chat_list.js'
 import emoji from './modules/emoji.js'
 import gif from './modules/gif.js'
 import myfriends from './modules/friend.js'
+import chat_message from './modules/chat_message.js'
 export default new vuex.Store({
     modules:{
         me: myself,
@@ -15,6 +16,7 @@ export default new vuex.Store({
         chat_list,
         emoji,
         gif,
-        myfriends
+        myfriends,
+        chat_message
     }
 })

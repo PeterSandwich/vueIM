@@ -5,6 +5,7 @@
         spellcheck="false"
         placeholder="给 @captain seagle 发信息" 
         @keydown="mutli_input_keydown($event)"
+       
         >
         </div>
     </div>
@@ -19,14 +20,27 @@ export default {
         }
     },
     methods: {
+
         addemj(e){
-            e = '<span>'+e+'</span>'
-            this.$refs.editor.innerHTML += e
-            this.$refs.editor.lastElementChild.focus()
-            this.placeCaretAtEnd(this.$refs.editor.lastElementChild);
+            let inputTxt = this.$refs.editor;
+            if(inputTxt.lastElementChild){
+                inputTxt.lastElementChild.innerText += e
+                inputTxt.lastElementChild.focus()
+                inputTxt.innerHTML = _.replace(inputTxt.innerHTML, /<span>/g, '')
+                inputTxt.innerHTML = _.replace(inputTxt.innerHTML, /<\/span>/g, '')
+                inputTxt.innerHTML = _.replace(inputTxt.innerHTML, /<br>/g, '')
+                this.placeCaretAtEnd(inputTxt.lastElementChild);
+            }else{
+                this.$refs.editor.innerHTML += e
+                inputTxt.innerHTML = _.replace(inputTxt.innerHTML, /<span>/g, '')
+                inputTxt.innerHTML = _.replace(inputTxt.innerHTML, /<\/span>/g, '')
+                inputTxt.innerHTML = _.replace(inputTxt.innerHTML, /<br>/g, '')
+            }
+            
+            
+            
         },
         mutli_input_keydown(evt){
-            console.log(evt)
             let inputTxt = this.$refs.editor;
             if ((evt.ctrlKey) && evt.which == 13) {
                 inputTxt.innerHTML+='<div><br></div>';
@@ -39,6 +53,7 @@ export default {
                 inputTxt.innerHTML = ''
                 return false;
             }
+            
         },
         placeCaretAtEnd(el) {
             el.focus();
@@ -57,6 +72,9 @@ export default {
                 textRange.collapse(false);
                 textRange.select();
             }
+        },
+        click_to_focus(){
+            
         }
     }
 }

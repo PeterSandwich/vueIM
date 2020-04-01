@@ -5,11 +5,11 @@ const chat_list={
             {
                 chat_id: 3030000,
                 chat_name: "吴广城",
+                chat_user_id: 1606100138,
                 is_group: false,
                 chat_img: "https://images.unsplash.com/photo-1520182205149-1e5e4e7329b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60",
                 user_status: 2,
-                group_memnber: [],
-                chat_user_id: 1606100138
+                group_memnber: []
             }
         ]
      },

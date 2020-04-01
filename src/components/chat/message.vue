@@ -11,7 +11,11 @@
             </div>
             <div class="msg_text">
                 <h2 v-if="with_head">name<span>上星期六11:36</span></h2>
-                <div>{{message_content}}<br>{{message_content}}<br>{{message_content}}</div>
+                <div>
+                    <template v-if="msg.content.text.innerText">
+                        <div v-for="t in msg.content.text.innerText" :key="t.id">{{t}}</div>
+                    </template>
+                </div>
             </div>
         </div>
         
@@ -21,11 +25,15 @@
 export default {
     name: 'message',
     props:[
-        'with_head'
+        'with_head',
+        'msg'
     ],
+    mounted: function(){
+        console.log(this.msg.content.text.innerText)
+    },
     data:function(){
         return {
-            message_content: 'hello world! pan jiawei 潘家伟在此，hello world! pan jiawei 潘家伟在此，hello world! pan jiawei 潘家伟在此，hello world! pan jiawei 潘家伟在此'
+        
         }
     }
 }

@@ -2,7 +2,7 @@
 const myself={
     state: { 
         base:{
-            me_id: '1606100136',
+            me_id: 1606100136,
             me_fixid: '8888',
             me_name: '潘家炜',
             me_sd_status_keep_time: 0,

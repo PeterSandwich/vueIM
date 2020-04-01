@@ -118,12 +118,12 @@
       </div>
 
       <div class="sideBar_me">
-        <div class="sideBar_me_in">
+        <div class="sideBar_me_in" @mouseover="me_status_fixid_switch=false" @mouseleave="me_status_fixid_switch=true">
           <div style="position:relative;" ref="changing_status_el">
             <div class="sideBar_me_head" @click="changing_status = !changing_status" @mouseover="head_hover=true"
               @mouseleave="head_hover=false">
               <div v-bind:class="{ sideBar_me_head_hover: head_hover }"></div>
-              <user-head style="height: 32px;width: 32px;" v-bind:with_status="true" v-bind:user_status="me_status"
+              <user-head style="height: 32px;width: 32px;" :headimg="me_base.me_headimg" v-bind:with_status="true" v-bind:user_status="me_status"
                 v-bind:bg_color="'#2f3136'"></user-head>
             </div>
 
@@ -195,7 +195,8 @@
           </div>
           <div class="sideBar_me_info">
             <div class="sideBar_me_info_name">{{me_base.me_name}}</div>
-            <div class="sideBar_me_info_num">#{{me_base.me_fixid}}</div>
+            <div class="sideBar_me_info_num" v-if="me_base.me_sd_status_exsit&&me_status_fixid_switch">{{me_base.me_sd_status}}</div>
+            <div class="sideBar_me_info_num" v-else>#{{me_base.me_fixid}}</div>
           </div>
           <div class="sideBar_me_setting">
             <div @click="$store.commit('switch_microphone')">
@@ -425,6 +426,7 @@
         dialogSettingVisible: false,
         dialogGlobalSearchVisible: false,
         visible_create_chat: false,
+        me_status_fixid_switch: true,
         changing_status: false,
         sideBar_select_hover: -1,
         sideBar_select_select: 'friend',

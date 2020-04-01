@@ -44,7 +44,7 @@ export default new Router({
               component: chat,
               beforeEnter: (to, from, next) => {
        
-                console.log(store.state.chat_list.clist)
+                // console.log(store.state.chat_list.clist)
                 if(_.findIndex(store.state.chat_list.clist, function(o) { return o.chat_id == to.params.id; })>=0){
                   next()
                 }else{
