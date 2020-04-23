@@ -6,14 +6,14 @@
       <div class="login_table">
           <div class="login_email">
               <div class="login_lable">电子邮箱</div>
-              <input/>
+              <input v-model="email"/>
           </div>
           <div class="login_passwd">
               <div class="login_lable">密码</div>
-              <input type="password"/>
+              <input type="password" v-model="passwd"/>
           </div>
           <button class="login_forget">忘记密码？</button>
-          <button class="login_login" @click="tohome">登录</button>
+          <button class="login_login" @click="login()" v-loading.fullscreen.lock="fullscreenLoading">登录</button>
           <div class="login_regist">
               <span style="color: #72767d;font-size:14px;">需要新的账号？</span>
               <button class="login_regist_btn" style="font-size:14px;" @click="toregister">注册</button>
@@ -37,13 +37,53 @@
 
 <script>
 export default {
-  name: 'login',
+    name: 'login',
+    data: function(){
+        return {
+            email:"",
+            passwd:"",
+            fullscreenLoading:false
+        }
+    },
+    mounted:function(){
+        if (window.sessionStorage.getItem('me_id')){
+             this.$router.push('/')
+        }
+    },
   methods:{
       toregister: function(){
           this.$router.push('/account/register')
       },
       tohome: function(){
           this.$router.push('/')
+      },
+      login(){
+          if(this.email.length==0||
+          this.passwd.length==0){
+              this.$message.error("输入字段不能为空");
+              return
+          }
+          
+          this.fullscreenLoading = true
+          this.$axios.post('http://localhost:9876/api/login', {
+            email: this.email,
+            passwd: this.passwd
+        },{ timeout: 5000 })
+        .then((response) =>{
+            console.log(response);
+            this.fullscreenLoading = false
+            if(response.status == 200 && response.data.code == 1001){
+                this.$message({ message: '登录成功',type: 'success'})
+                this.$store.commit('setBase',response.data.data)
+                   this.tohome()
+            }else{
+                this.$message.error(response.data.message)
+            }
+        })
+        .catch(function (error) {
+            this.fullscreenLoading = false
+            console.log(error);
+        });
       }
   }
 }

@@ -12,49 +12,60 @@ const chat_message={
             //             timestamp: 1585705299,
             //             sender: 1606100136,
             //             receiver: 1606100138,
-            //             content: {
-            //                 text: {
-            //                     innerText: []
-            //                 },
-            //                 image: {
-            //                     imageUrl: '',
-            //                     width: 300,
-            //                     height: 200,
-            //                     innerText: []
-            //                 },
-            //                 file: {
-            //                     fileName: '',
-            //                     fileSize: '',
-            //                     innerText: []
-            //                 }
-            //             }
+            //             innerText: [],
+            //             src: '',
+            //             width: 300,
+            //             height: 200,
+            //             fileName: '',
+            //             fileSize: ''
             //         }
             //     ]
             // }
-        ]
+        ],
+        percentage:{}
      },
     getters:{
         getMsgList: (state) => (chat_id) => {
-            console.log('getiiiiii')
             let idx = _.findIndex( state.msglist, function(o){ return o.chat_id == chat_id;})
             if(idx>=0){
-                console.log('getiiiiii',state.msglist[idx].messages)
                 return state.msglist[idx].messages
             }
             return []
+        },
+        MsguploadPercentage: (state) => {
+            console.log("In MsguploadPercentage")
+            return state.percentage
         }
     },
     mutations: {
+        fileUploadAfter(state,payload){
+            let idx = _.findIndex( state.msglist, function(o){ return o.chat_id == payload.chat_id;})
+            if(idx>=0){
+                let i = _.findIndex( state.msglist[idx].messages, function(o){ return o.msg_id == payload.msg_id;})
+                if(i>=0){
+                    state.msglist[idx].messages[i].param = null
+                }
+               
+            }
+        },
+        msglist_del(state,payload){
+            let idx = _.findIndex( state.msglist, function(o){ return o.chat_id == payload.chat_id;})
+            if(idx>=0){
+                state.msglist[idx].messages = _.filter( state.msglist[idx].messages, function(o){ return o.msg_id != payload.msg_id;})
+            }
+        },
         msglist_add(state, payload){
-            // console.log('add msg=>', payload)
             let cid = payload.chat_id
             let item={
-                msg_id: uuidv1(),
+                msg_id: payload.msg_id,
                 msg_type: payload.msg_type,
                 timestamp: payload.timestamp,
                 sender: payload.sender,
                 receiver: payload.receiver,
-                content: payload.content
+                innerText: payload.innerText,
+                content: payload.content,
+                param: payload.param,
+                isgroup: payload.isgroup
             }
 
             let idx = _.findIndex( state.msglist, function(o){ return o.chat_id == cid;})
@@ -68,10 +79,7 @@ const chat_message={
                     ]
                 }
                 state.msglist.push(initAry)
-
             }
-
-            console.log(state.msglist)
         }
     }
 }

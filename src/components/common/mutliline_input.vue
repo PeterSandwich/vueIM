@@ -73,6 +73,11 @@ export default {
                 textRange.select();
             }
         },
+        enterToSend(){
+            let inputTxt = this.$refs.editor;
+            this.$emit('send',inputTxt.innerHTML)
+            inputTxt.innerHTML = ''
+        },
         click_to_focus(){
             
         }

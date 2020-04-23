@@ -16,45 +16,47 @@ import store from '../store/index'
 import _ from 'lodash'
 Vue.use(Router)
 
-export default new Router({
-  routes: [
-    {
+const router = new Router({
+  routes: [{
       path: '/',
       name: 'home',
       component: home,
+      meta: {
+        requireAuth: true
+      },
       redirect: '/master',
-      children:[
-        {
+      children: [{
           path: 'master',
-          name:'master',
+          name: 'master',
           component: master,
           redirect: '/master/@me',
-          children:[
-            {
-              path: '@me',
-              name: 'me',
-              component: friend
-            },{
-              path: 'infomation',
-              name: 'infomation',
-              component: infomation
-            },{
-              path: 'chat/:id',
-              name: 'chat',
-              component: chat,
-              beforeEnter: (to, from, next) => {
-       
-                // console.log(store.state.chat_list.clist)
-                if(_.findIndex(store.state.chat_list.clist, function(o) { return o.chat_id == to.params.id; })>=0){
-                  next()
-                }else{
-                  next('/') 
-                }              
+          children: [{
+            path: '@me',
+            name: 'me',
+            component: friend
+          }, {
+            path: 'infomation',
+            name: 'infomation',
+            component: infomation
+          }, {
+            path: 'chat/:id',
+            name: 'chat',
+            component: chat,
+            beforeEnter: (to, from, next) => {
+
+              // console.log(store.state.chat_list.clist)
+              if (_.findIndex(store.state.chat_list.clist, function (o) {
+                  return o.uid == to.params.id;
+                }) >= 0) {
+                  console.log("chat befor in")
+                next()
+              } else {
+                next('/')
               }
-              
-              
             }
-          ]
+
+
+          }]
         },
         {
           path: 'channel/:id',
@@ -62,7 +64,7 @@ export default new Router({
           component: channel
         },
         {
-          path:'discovery',
+          path: 'discovery',
           name: 'discovery',
           component: discovery
         }
@@ -73,16 +75,21 @@ export default new Router({
       name: 'account',
       redirect: '/account/login',
       component: account,
-      children:[
-        {
+      children: [{
           path: 'login',
           name: 'login',
-          component: login
+          component: login,
+          meta: {
+            requireOperation: true
+          }
         },
         {
           path: 'register',
           name: 'register',
-          component: register
+          component: register,
+          meta: {
+            requireOperation: true
+          }
         }
       ]
     },
@@ -103,3 +110,31 @@ export default new Router({
 
   ]
 })
+
+// 判断是否需要登录权限 以及是否登录
+router.beforeEach((to, from, next) => {
+  if (to.matched.some(res => res.meta.requireAuth)) { // 判断是否需要登录权限
+    if (window.localStorage.getItem('user_id_cache')) { // 判断是否登录
+      next()
+    } else { // 没登录则跳转到登录界面
+      next({
+        path: '/account/login',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  } else if(to.matched.some(res => res.meta.requireOperation)) {
+    if (window.localStorage.getItem('user_id_cache')) {
+      next({
+        path: '/',
+        query: {
+          redirect: to.fullPath
+        }
+      })
+    }
+  }
+  next()
+})
+
+export default router

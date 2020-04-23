@@ -2,7 +2,7 @@
 <template>
     <div class="sh_container">
         <div  class="sh_container_nx">
-            <div v-if="ok" class="sh_container_in">
+            <div v-if="sf_friend_list_count>0" class="sh_container_in">
                 <div class="sh_cantainer_list_item_head">屏蔽好友数-{{sf_friend_list_count}}</div>
                 <div class="sh_cantainer_list_item" v-for="friend in sf_friend_list" v-bind:key='friend.uid'>
                     <div class="sh_cantainer_list_item_info">
@@ -22,6 +22,10 @@
                         </el-tooltip>
                     </div>
                 </div>
+            </div>
+            <div v-else class="ad_cantainer_list_nx_img">
+                <img src="../../assets/undraw_happy_music_g6wc.svg"/>
+                <h3>这里没有你讨厌的人哦~</h3>
             </div>
         </div>
     </div>
@@ -50,12 +54,35 @@ export default {
             }
         }
     },
+    mounted:function(){
+        this.$axios.get('http://localhost:9876/api/shield_friend_list')
+            .then((response) =>{
+                if(response.status == 200 && response.data.code == 1001){
+                    console.log(response.data.data)
+                    if(response.data.data){
+                        this.$store.commit("flush_shield_friend_list",response.data.data)
+                    }
+                    
+                }else{
+                    console.log(response);
+                    this.$message.error(response.data.message)
+                }
+                
+            }
+            ).catch(function (error) {
+                console.log(error);
+            });
+    },
     computed: {
         sf_friend_list(){
             return this.$store.state.myfriends.shield_friends
         },
         sf_friend_list_count(){
-            return this.sf_friend_list.length
+            if(this.sf_friend_list){
+                return this.sf_friend_list.length
+            }
+            return 0
+            
         }
     },
     components:{
@@ -165,5 +192,22 @@ export default {
 }
 .sh_cantainer_list_item_action_del:hover .del_icon_switch{
     fill: red
+}
+.ad_cantainer_list_nx_img{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 80px;
+}
+.ad_cantainer_list_nx_img h3{
+    color: #72767d;
+    font-size: 16px;
+    line-height: 20px;
+}
+.ad_cantainer_list_nx_img img{
+    width: 400px;
+    height: 300px;
 }
 </style>

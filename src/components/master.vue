@@ -56,7 +56,7 @@
                   <div class="maspop_can_head_input" ref="maspop">
                     <div class="maspop_can_head_input_item" v-for="sf in create_chat_had_select_friend_list"
                       :key="sf.uid">
-                      <div>{{sf.username}}</div>
+                      <div>{{sf.name}}</div>
                       <span><svg @click="sf.selected=false;create_chat_max_members+=1;" t="1585204143380" class="icon"
                           viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6225"
                           width="12" height="12">
@@ -72,7 +72,7 @@
                   <div v-for="fri in create_chat_list_friends_to_select" :key="fri.uid" class="maspop_can_body_item">
                     <user-head style="height: 32px;width: 32px;" :headimg="fri.headimg" v-bind:with_status="true"
                       v-bind:user_status="fri.status" v-bind:bg_color="'#2f3136'"></user-head>
-                    <div class="maspop_can_body_item_name">{{fri.username}}<span>#{{fri.fixid}}</span></div>
+                    <div class="maspop_can_body_item_name">{{fri.name}}<span>#{{fri.fix_id}}</span></div>
                     <div>
                       <el-checkbox @change="cbox_change($event)" v-model="fri.selected"
                         :disabled="create_chat_max_members<=0&&!fri.selected"></el-checkbox>
@@ -81,7 +81,7 @@
 
                 </div>
                 <div class="maspop_can_footer">
-                  <button @click="create_chat()">创建群组私信</button>
+                  <button @click="create_chat(create_chat_had_select_friend_list)">创建群组私信</button>
                 </div>
               </div>
               <div slot="reference" style="color: rgb(168, 168, 168);">
@@ -96,16 +96,16 @@
             </el-popover>
           </div>
 
-          <div class="sideBar_select" v-for="chat_item in getChatList" v-bind:key="chat_item.chat_id"
-            @click="sideBar_select_click('chat',chat_item)" @mouseover="sideBar_select_hover=chat_item.chat_id"
+          <div class="sideBar_select" v-for="chat_item in getChatList" v-bind:key="chat_item.uid"
+            @click="sideBar_select_click('chat',chat_item)" @mouseover="sideBar_select_hover=chat_item.uid"
             @mouseleave="sideBar_select_hover=0"
-            v-bind:class="{sideBar_select_hover_active: sideBar_select_hover==chat_item.chat_id&&sideBar_select_select!=chat_item.chat_id, sideBar_select_select_active:sideBar_select_select==chat_item.chat_id}">
+            v-bind:class="{sideBar_select_hover_active: sideBar_select_hover==chat_item.uid&&sideBar_select_select!=chat_item.uid, sideBar_select_select_active:sideBar_select_select==chat_item.uid}">
             <div class="sideBar_select_w" @contextmenu="showContextMenu($event, chat_item)">
-              <user-head style="height: 32px;width: 32px;" :headimg="chat_item.chat_img"
+              <user-head style="height: 32px;width: 32px;" :headimg="chat_item.avatar"
                 v-bind:with_status="!chat_item.is_group" v-bind:user_status="chat_item.user_status"
                 v-bind:bg_color="'#2f3136'"></user-head>
               <div class="sideBar_select_ic">{{chat_item.chat_name}}</div>
-              <div v-if="sideBar_select_hover==chat_item.chat_id" @click="delete_chat(chat_item.chat_id)">
+              <div v-if="sideBar_select_hover==chat_item.uid" @click="delete_chat(chat_item.uid)">
                 <svg class="closeIcon-rycxaQ" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                   <path fill="currentColor"
                     d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z">
@@ -459,6 +459,19 @@
           this.changing_status = false //点击其他区域关闭
         }
       })
+      this.$axios.get('http://localhost:9876/api/chat_list')
+        .then((response) =>{
+            console.log("chat_list=>",response);
+            if(response.status == 200 && response.data.code == 1001){
+              this.$store.commit("set_chatlist",response.data.data)
+                
+            }else{
+                this.$message.error(response.data.message)
+            }
+        })
+        .catch(function (error) {
+            console.log(error);
+        });
 
     },
     methods: {
@@ -504,6 +517,29 @@
         this.self_df_status_msg = ''
 
       },
+      goToChat(uid){
+            let idx = _.findIndex(this.$store.state.chat_list.clist, function(o) { return o.uid == uid; })
+            if(idx<0){
+                let fidx = _.findIndex(this.$store.state.myfriends.friends, function(o) { return o.uid == uid; })
+                this.$store.commit("chatlist_add",{
+                    uid: uid,
+                    name: this.$store.state.myfriends.friends[fidx].name,
+                    avatar: this.$store.state.myfriends.friends[fidx].headimg
+                })
+
+                this.$axios.post('http://localhost:9876/api/chat_open', {uid: uid})
+                .then((response) =>{console.log(response);})
+                .catch(function (error) {console.log(error);})
+            }
+
+            this.$router.push({
+                    name: 'chat',
+                    params: {
+                    id: uid,
+                    isgroup: false
+                }
+            }).catch(() => {})
+        },
       selectActive: function (path) {
 
         const vpath = path.split('/')
@@ -527,11 +563,13 @@
         return '#8a8a8a'
       },
       sideBar_select_click: function (e, item) {
-        if (e == 'chat') {
+        if (e == 'chat') {  
+          console.log("goto:",item)
           this.$router.push({
             name: 'chat',
             params: {
-              id: item.chat_id,
+              id: item.uid,
+              name: item.chat_name,
               isgroup: item.is_group
             }
           }).catch(() => {})
@@ -551,6 +589,9 @@
       delete_chat: function (chat_id) {
         this.$router.push({path: '/master/@me'})
         this.$store.commit('chatlist_delete', chat_id)
+        this.$axios.post('http://localhost:9876/api/chat_close', {uid: chat_id})
+        .then((response) =>{console.log(response);})
+        .catch(function (error) {console.log(error);})
         
       },
       popver_show_leave: function () {
@@ -565,7 +606,7 @@
           }
           this.create_chat_list_friends_to_select.push(tmp)
         }
-        this.create_chat_max_members = 10
+        this.create_chat_max_members = 9
         this.box = this.$refs.maspop
         this.box.addEventListener("mousewheel", e => {
           //计算鼠标滚轮滚动的距离
@@ -579,46 +620,55 @@
         this.$store.commit('switch_status', s)
         this.changing_status = false
       },
-      create_chat() {
-        console.log(this.create_chat_had_select_friend_list)
-        let count = this.create_chat_had_select_friend_list.length
+      create_chat(member) {
+        console.log(member)
+        let count = member.length
         let item = {}
         if (count <= 0) {
           return
         } else if (count == 1) {
           let uid = this.create_chat_had_select_friend_list[0].uid
-          if(_.findIndex(this.$store.state.chat_list.clist, function(o) { return o.chat_user_id == uid; })>=0){
-              console.log('列表已有')
-              //todo 跳转到该item 进行聊天
-              this.$refs.click_nothing.click()
-              return
-          }
-          
-          item = {
-            chat_name: this.create_chat_had_select_friend_list[0].username,
-            is_group: false,
-            chat_img: this.create_chat_had_select_friend_list[0].headimg,
-            user_status: this.create_chat_had_select_friend_list[0].status,
-            group_memnber: [],
-            chat_user_id: uid
-          }
+          this.goToChat(uid)
+
         } else {
+
           let chat_name_list = []
-          for (let f of this.create_chat_had_select_friend_list) {
-            chat_name_list.push(f.username)
+          let member_id_list = []
+          chat_name_list.push(this.me_base.me_name)
+          member_id_list.push(this.me_base.me_id)
+          for (let f of member) {
+            chat_name_list.push(f.name)
+            member_id_list.push(f.uid)
           }
-          item = {
-            chat_name: chat_name_list.join(','),
-            is_group: true,
-            chat_img: '',
-            user_status: 0,
-            chat_user_id: -1,
-            group_memnber: this.create_chat_had_select_friend_list
+
+          let body = {
+            name: chat_name_list.join(','),
+            avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5dvniigoyg8s7uEI2AwX3PFdiq1rjy5LfY8OOj-k1BrS3pNs2r3Xs&s',
+            members: member_id_list
           }
+          this.$axios.post('http://localhost:9876/api/group', body)
+          .then((response) =>{
+              console.log(response);
+              if(response.status == 200 && response.data.code == 1001){
+                  this.$message({ message: '创建成功',type: 'success'})
+                  this.$store.commit('chatlist_group_add',{
+                    uid: response.data.data,
+                    name: chat_name_list.join(','),
+                    avatar: body.avatar,
+                    member_count: body.members.length,
+                  })
+              }else{
+                  this.$message.error(response.data.message)
+              }
+          })
+          .catch(function (error) {
+              this.$message.error(error)
+          });
         }
-        this.$store.commit('chatlist_add', item)
+            
         this.$refs.click_nothing.click()
       }
+      
     },
     computed: {
       create_chat_had_select_friend_list() {
@@ -633,16 +683,21 @@
         return this.self_df_status_emj || this.self_df_status_msg
       },
       me_open_microphone() {
-        return this.$store.state.me.me_open_microphone
+        console.log(this.$store.state.me.setting)
+        var tmp = JSON.parse(this.$store.state.me.setting)
+        return tmp.me_open_microphone
       },
       me_open_earphone() {
-        return this.$store.state.me.me_open_earphone
+        var tmp = JSON.parse(this.$store.state.me.setting)
+        return tmp.me_open_earphone
       },
       me_base() {
         return this.$store.state.me.base
       },
       me_status() {
-        return this.me_base.me_status
+        var tmp = JSON.parse(this.$store.state.me.base.me_status)
+        console.log(tmp)
+        return tmp.status
       },
       ...mapGetters([
         'getChatList'

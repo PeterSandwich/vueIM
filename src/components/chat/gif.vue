@@ -19,7 +19,7 @@
                 
             </div>
             <div v-for="gif in gifs_list" :key="gif.id" class="gif_body_item">
-                <img :src="gif.url" />
+                <img :src="gif.url" @click="send(gif)" />
             </div>
         </div>
     </div>
@@ -32,6 +32,17 @@ export default {
     data: function(){
         return{
             is_my_gif: true
+        }
+    },
+    methods:{
+        send(gif){
+            let item = {
+                url: gif.url,
+                height:gif.height,
+                width:gif.width,
+                size: gif.size
+            }
+            this.$emit('gifsend',item)
         }
     },
     computed:{

@@ -2,15 +2,15 @@ let _ = require('lodash')
 const chat_list={
     state: { 
         clist: [
-            {
-                chat_id: 3030000,
-                chat_name: "吴广城",
-                chat_user_id: 1606100138,
-                is_group: false,
-                chat_img: "https://images.unsplash.com/photo-1520182205149-1e5e4e7329b4?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=60",
-                user_status: 2,
-                group_memnber: []
-            }
+            // {
+            //     uid: "83ee5f562b574afcba420d595aa46ab2"
+            //     is_group: false
+            //     chat_name: "wgc"
+            //     avatar: "https://img.51miz.com/Element/00/77/27/33/9085ae9e_E772733_58c62bd5.png"
+            //     member_count: 0
+            //     unread_count: 1
+            //     latest_msg_time: 0
+            // }
         ]
      },
     getters:{
@@ -19,23 +19,41 @@ const chat_list={
         }
     },
     mutations: {
+        set_chatlist(state, payload){
+            state.clist = payload
+        },
         chatlist_delete (state, payload) {
             state.clist = _.remove(state.clist, function(v) {
-                return v.chat_id!=payload;
+                return v.uid!=payload;
             });      
         },
         chatlist_add(state, payload){
-            console.log(payload)
+            
             let item={
-                chat_id: 3030000+state.clist.length+1,
-                chat_user_id: payload.chat_user_id,
-                chat_name: payload.chat_name,
-                is_group: payload.is_group,
-                chat_img: payload.chat_img,
-                user_status: payload.user_status,
-                group_memnber: payload.group_memnber
+                uid: payload.uid,
+                is_group: false,
+                chat_name: payload.name,
+                avatar: payload.avatar,
+                member_count: 0,
+                unread_count: 0,
+                latest_msg_time: 0
             }
             state.clist.unshift(item)
+            // console.log(state.clist)
+        },
+        chatlist_group_add(state, payload){
+            
+            let item={
+                uid: payload.uid,
+                is_group: true,
+                chat_name: payload.name,
+                avatar: payload.avatar,
+                member_count: payload.member_count,
+                unread_count: 0,
+                latest_msg_time: 0
+            }
+            state.clist.unshift(item)
+            // console.log(state.clist)
         }
     }
 }

@@ -178,8 +178,13 @@ export default {
             dialogTableVisible: false,
             add_server: 0,
             create_server_input: "",
-            isConnecting: true
+            isConnecting: true,
+            websocket: null
         }
+    },
+    mounted:function(){
+        console.log("mounted")
+        this.init()
     },
     computed: {
         ...mapGetters([
@@ -187,6 +192,49 @@ export default {
         ])
     },
     methods: {
+        init(){
+            console.log("websocket init")
+            if(typeof(WebSocket) === "undefined"){
+                alert("您的浏览器不支持socket")
+            }else{
+                this.$gws.setWs(new WebSocket("ws://localhost:9876/ws"))
+                this.$gws.ws.onmessage = this.onmessage
+                this.$gws.ws.onopen = this.onopen
+                this.$gws.ws.onclose = this.onclose
+                this.$gws.ws.onerror = this.onerror
+            }
+        },
+        onmessage:function(event){
+            console.log("onmessage")
+            console.log(event.data)
+            let data = JSON.parse(event.data)
+            let payload = data.msg
+            let chat_id = payload.sender
+            if(data.op==1){
+                chat_id = payload.receiver
+            }
+            this.$store.commit("msglist_add",{
+                            chat_id: chat_id,
+                            msg_id: payload.msg_id,
+                            msg_type: payload.msg_type,
+                            timestamp: payload.timestamp/1000000,
+                            sender: payload.sender,
+                            receiver: payload.receiver,
+                            innerText: payload.innerText,
+                            content: payload.content
+                        })
+        },
+        onopen:function(){
+             console.log("onopen")
+             this.isConnecting = false
+        },
+        onclose:function(){
+             this.isConnecting = true
+             this.$gws.setWs(new WebSocket("ws://localhost:9876/ws"))
+        },
+        onerror:function(){
+            console.log("onerror")
+        },
         currentChoose:function(key, value){
             let ph = this.$route.path.split('/')[1]
             if(key == ph){
@@ -225,11 +273,6 @@ export default {
     },
     components:{
         'global-home-loading':butif_loading
-    },
-    mounted: function(){
-        setTimeout(()=>{
-            this.isConnecting = false
-        }, 1000)
     }
 }
 </script>

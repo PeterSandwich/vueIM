@@ -6,8 +6,8 @@
                     <svg v-if="isgroup" t="1584933506312" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19584" width="22" height="22"><path d="M863.6188448 876.86257813A90.56711147 90.56711147 0 0 0 876.08888853 830.80533333V762.31111147c0-100.1244448-90.9312-186.5955552-222.27626666-226.59982294C706.3779552 485.64906667 739.5555552 412.0576 739.5555552 329.9555552c0-49.5616-12.1059552-96.0284448-33.2231104-136.07822187C801.13208853 200.97706667 876.08888853 289.7692448 876.08888853 398.22222187c0 70.76977813-31.85777813 133.16551147-80.41813333 169.9384896 126.11128853 27.30666667 216.95146667 103.90186667 216.95146667 194.1504v69.0403552a45.51111147 45.51111147 0 0 1-45.5111104 45.51111146h-103.49226667zM375.46666667 557.51111147c-125.65617813 0-227.5555552-112.0483552-227.5555552-250.31111147S249.81048853 56.88888853 375.46666667 56.88888853s227.5555552 112.0483552 227.5555552 250.31111147S501.1228448 557.51111147 375.46666667 557.51111147z m364.08888853 318.80533333a91.02222187 91.02222187 0 0 1-91.02222187 91.02222187H102.4a91.02222187 91.02222187 0 0 1-91.02222187-91.02222187V807.82222187C11.37777813 669.55946667 174.39857813 557.51111147 375.46666667 557.51111147s364.08888853 112.0483552 364.08888853 250.3111104v68.49422293z" p-id="19585" ></path></svg>
                     <svg v-else t="1584756017022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5933" width="22" height="22"><path d="M618.666667 718.933333c21.333333 19.2 49.066667 27.733333 81.066666 27.733334 68.266667 0 123.733333-27.733333 170.666667-81.066667 44.8-53.333333 68.266667-125.866667 68.266667-215.466667 0-108.8-38.4-196.266667-113.066667-264.533333C750.933333 119.466667 652.8 85.333333 531.2 85.333333c-130.133333 0-238.933333 42.666667-322.133333 128C128 300.8 85.333333 407.466667 85.333333 533.333333c0 123.733333 38.4 221.866667 117.333334 296.533334 78.933333 72.533333 179.2 110.933333 302.933333 110.933333 89.6 0 164.266667-12.8 221.866667-38.4v-100.266667c-64 29.866667-132.266667 44.8-209.066667 44.8-100.266667 0-177.066667-27.733333-234.666667-83.2-55.466667-55.466667-85.333333-132.266667-85.333333-228.266666 0-100.266667 32-183.466667 96-253.866667 64-68.266667 142.933333-104.533333 241.066667-104.533333 89.6 0 160 25.6 211.2 76.8 51.2 51.2 74.666667 117.333333 74.666666 198.4 0 59.733333-8.533333 106.666667-25.6 145.066666-17.066667 36.266667-40.533333 55.466667-66.133333 55.466667-25.6 0-38.4-23.466667-38.4-72.533333 0-44.8 8.533333-142.933333 23.466667-290.133334h-113.066667L597.333333 341.333333h-2.133333c-12.8-40.533333-44.8-61.866667-93.866667-61.866666-55.466667 0-102.4 25.6-142.933333 74.666666C320 403.2 298.666667 469.333333 298.666667 548.266667c0 61.866667 14.933333 108.8 42.666666 145.066666 27.733333 34.133333 66.133333 51.2 113.066667 51.2 61.866667 0 104.533333-34.133333 128-100.266666h2.133333c2.133333 32 12.8 57.6 34.133334 74.666666z m-51.2-322.133333c12.8 14.933333 19.2 38.4 19.2 66.133333 0 57.6-8.533333 104.533333-27.733334 140.8-19.2 34.133333-42.666667 53.333333-74.666666 53.333334-21.333333 0-36.266667-8.533333-51.2-27.733334-12.8-19.2-19.2-44.8-19.2-76.8 0-46.933333 8.533333-87.466667 27.733333-123.733333 19.2-36.266667 42.666667-53.333333 74.666667-53.333333 21.333333-2.133333 38.4 6.4 51.2 21.333333z" p-id="5934" ></path></svg>
                 </div>
-                <div>{{friend_info.chat_name}}</div>
-                <div class="chat_header_info_icon_status"><header-status style="width:16px;height:16px" v-if="!friend_info.is_group" :now_status="friend_info.user_status"></header-status></div>
+                <div class="chat_name_title">{{chat_name}}<span ref="click_nothing" @click="1==1"></span></div>
+                <div class="chat_header_info_icon_status"><header-status style="width:16px;height:16px" v-if="!isgroup" :now_status="friend_info.user_status"></header-status></div>
             </div>
             <div class="chat_header_op">
                 <div>
@@ -39,13 +39,14 @@
             <div class="chat_dispaly_area">
                 <div class="chat_win">
                     <div class="chat_win_list" id="data-list-content">
-                        <message v-for="m in getMsgList(uid)" v-bind:key="m.msg_id" :msg="m" v-bind:with_head="true"></message>
+                        <message v-for="(m,index) in getMsgList(uid)" v-bind:key="m.msg_id" :chat_id="uid" :msg="m" v-bind:with_head="message_with_head(index)"></message>
                     </div>
                 </div>
                 <div class="chat_input">
                     <div class="chat_input_in">
                         <div class="chat_input_add">
-                            <svg t="1585057976256" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12422" width="32" height="32"><path d="M828.019978 196.517769C743.47749 112.38358 631.108237 66.051345 511.546164 66.051345c-119.55798 0-231.953839 46.332235-316.500421 130.466424C110.468462 280.679587 63.876308 392.630309 63.876308 511.713474c0 119.111818 46.592155 231.027747 131.134643 315.188542 84.547605 84.133166 196.946534 130.467447 316.506561 130.467447 119.56105 0 231.959979-46.334281 316.474838-130.467447 84.61105-84.189448 131.198088-196.140169 131.168412-315.222311C959.190437 392.594493 912.632051 280.679587 828.019978 196.517769L828.019978 196.517769zM735.389278 543.68463 543.525506 543.68463l0 191.863772c0 17.682731-14.325263 31.974225-31.979342 31.974225-17.645892 0-31.973202-14.291494-31.973202-31.974225L479.572962 543.68463 287.711236 543.68463c-17.647939 0-31.972179-14.323217-31.972179-31.971156 0-17.653055 14.32424-31.980365 31.972179-31.980365l191.862749 0L479.573985 287.872407c0-17.647939 14.326287-31.974225 31.973202-31.974225 17.654079 0 31.979342 14.326287 31.979342 31.974225l0 191.860702 191.862749 0c17.681708 0 31.973202 14.32731 31.973202 31.980365C767.36248 529.361413 753.070986 543.68463 735.389278 543.68463L735.389278 543.68463zM735.389278 543.68463" fill="#dbdbdb" p-id="12423"></path></svg>
+                            <input ref="file_input" type="file" @change="fileUpload($event)"/>
+                            <svg @click="file_select()" t="1585057976256" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="12422" width="32" height="32"><path d="M828.019978 196.517769C743.47749 112.38358 631.108237 66.051345 511.546164 66.051345c-119.55798 0-231.953839 46.332235-316.500421 130.466424C110.468462 280.679587 63.876308 392.630309 63.876308 511.713474c0 119.111818 46.592155 231.027747 131.134643 315.188542 84.547605 84.133166 196.946534 130.467447 316.506561 130.467447 119.56105 0 231.959979-46.334281 316.474838-130.467447 84.61105-84.189448 131.198088-196.140169 131.168412-315.222311C959.190437 392.594493 912.632051 280.679587 828.019978 196.517769L828.019978 196.517769zM735.389278 543.68463 543.525506 543.68463l0 191.863772c0 17.682731-14.325263 31.974225-31.979342 31.974225-17.645892 0-31.973202-14.291494-31.973202-31.974225L479.572962 543.68463 287.711236 543.68463c-17.647939 0-31.972179-14.323217-31.972179-31.971156 0-17.653055 14.32424-31.980365 31.972179-31.980365l191.862749 0L479.573985 287.872407c0-17.647939 14.326287-31.974225 31.973202-31.974225 17.654079 0 31.979342 14.326287 31.979342 31.974225l0 191.860702 191.862749 0c17.681708 0 31.973202 14.32731 31.973202 31.980365C767.36248 529.361413 753.070986 543.68463 735.389278 543.68463L735.389278 543.68463zM735.389278 543.68463" fill="#dbdbdb" p-id="12423"></path></svg>
                         </div>
                         <div class="chat_input_raw" >
                             <mutliline-input ref="mip" @send="sendMsg($event)" ></mutliline-input>
@@ -56,7 +57,7 @@
                                     width="660"
                                     :visible-arrow="false"
                                     trigger="click">
-                                    <input-gif></input-gif>
+                                    <input-gif @gifsend="sendGif($event)"></input-gif>
                                     <svg slot="reference" t="1585058482320" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="17606" width="30" height="26"><path d="M909.696 85.333333H128c-39.552 0-85.333333 46.037333-85.333333 85.333334v682.666666a85.333333 85.333333 0 0 0 85.333333 85.333334h768a85.333333 85.333333 0 0 0 85.333333-85.333334V156.458667C981.333333 117.162667 949.248 85.333333 909.696 85.333333z m-307.712 141.354667h157.994667v40.490667h-107.989334V329.813333h96v40.32h-96V469.333333h-50.005333V226.688z m-96.298667 0h50.005334V469.333333h-50.005334V226.688zM264.021333 340.992c0-18.773333 2.432-35.498667 7.253334-50.090667s11.648-26.922667 20.48-36.906666 19.541333-17.578667 32.085333-22.826667 26.496-7.850667 41.813333-7.850667c15.786667 0 29.397333 1.962667 40.917334 5.930667s21.12 9.472 28.842666 16.597333 13.738667 15.616 18.090667 25.514667 7.168 20.736 8.490667 32.512h-48.64c-0.981333-6.101333-2.56-11.648-4.650667-16.597333s-5.034667-9.173333-8.704-12.672-8.192-6.186667-13.568-8.106667-11.818667-2.816-19.285333-2.816c-17.109333 0-30.122667 6.485333-38.997334 19.413333s-13.354667 32.128-13.354666 57.6v14.677334c0 25.429333 4.821333 44.672 14.506666 57.685333s23.850667 19.498667 42.496 19.498667c6.016 0 11.221333-0.384 15.658667-1.152s8.234667-1.749333 11.434667-2.901334a37.205333 37.205333 0 0 0 13.098666-7.936v-41.813333H366.506667v-36.906667h95.488v96.853334c-2.858667 3.456-6.826667 7.125333-11.818667 11.093333s-11.306667 7.594667-18.816 11.008-16.469333 6.229333-26.752 8.490667-22.101333 3.413333-35.413333 3.413333c-15.658667 0-29.952-2.602667-42.922667-7.765333s-24.021333-12.757333-33.237333-22.741334-16.426667-22.314667-21.461334-36.864-7.552-31.232-7.552-50.005333v-14.336zM170.666667 804.565333l170.666666-219.434666 121.856 146.730666 170.666667-219.904L853.333333 804.565333H170.666667z" fill="#dbdbdb" p-id="17607"></path></svg>
                                     </el-popover>
                             
@@ -76,24 +77,54 @@
             <div v-if="open_memside" class="chat_member_sidebar">
                 <div class="chat_member_sidebar_list">
                     <div class="chat_member_sidebar_list_in">
-                        <div class="chat_member_sidebar_list_header">成员-3</div>
-                        <div class="chat_member_sidebar_list_item" v-for=" i in 50" :key="i.id">
+                        <div class="chat_member_sidebar_list_header">成员-{{get_group_member().length}}</div>
+                        <div class="chat_member_sidebar_list_item" v-for=" m in get_group_member()" :key="m.uid">
                             <div class="chat_member_sidebar_list_item_head">
-                                <user-head style="height: 32px;width: 32px;" v-bind:with_status="true"  v-bind:user_status="i%4+1" v-bind:bg_color="'#2f3136'"></user-head>
+                                <user-head style="height: 32px;width: 32px;" :headimg="m.headimg" v-bind:with_status="true"  v-bind:user_status="m.status" v-bind:bg_color="'#2f3136'"></user-head>
                             </div>
                             <h3>
-                                Captain Seaglesa a
+                                {{m.name}}
+                                <br ><span style="font-size:11px;color:#8e9297;">{{m.self_defind_status}}</span>
                             </h3>
-                            <span><svg t="1585040697712" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11023" width="16" height="16"><path d="M143.3 933.6c0-22.6 18.3-41 41-41h661.8c22.6 0 41 18.3 41 41 0 22.6-18.3 41-41 41H184.3c-22.6 0-41-18.4-41-41zM979.9 402.9c3.6-10.6 2.9-22.4-2.7-32.8-0.1-0.3-0.3-0.5-0.4-0.8v-0.1c-5.8-10.7-16.3-18.8-29.3-21-14.2-2.4-27.9 2.9-37 12.8L751.7 474.3 548.3 246.6c-1.4-1.5-2.8-2.9-4.3-4.2l-0.2-0.2c-16.9-15.1-42.8-13.6-57.8 3.3L280.8 475.3 119.9 360.6c-9.1-9.5-22.5-14.5-36.5-12.2-17.5 2.9-30.6 16.6-33.5 33.2-1.3 6.5-1 13.2 0.9 19.5l86.9 398.8c0.2 5.3 1.4 10.3 3.4 14.9 6.9 17.7 25.5 28.8 44.9 25.5 1.4-0.2 2.8-0.5 4.2-0.9h661.4c13.3 0 25.1-6.3 32.6-16.1 4.3-5.3 7.4-11.8 8.6-19.1l87.1-401.3z" fill="#ea9518" p-id="11024"></path><path d="M515.2 21.5c-69.1 0-125 56-125 125s56 125 125 125 125-56 125-125-55.9-125-125-125z" fill="#ea9518" p-id="11025"></path></svg></span>
+                            
+                            <span v-if="m.role&&m.role=='master'" ><svg t="1585040697712" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="11023" width="16" height="16"><path d="M143.3 933.6c0-22.6 18.3-41 41-41h661.8c22.6 0 41 18.3 41 41 0 22.6-18.3 41-41 41H184.3c-22.6 0-41-18.4-41-41zM979.9 402.9c3.6-10.6 2.9-22.4-2.7-32.8-0.1-0.3-0.3-0.5-0.4-0.8v-0.1c-5.8-10.7-16.3-18.8-29.3-21-14.2-2.4-27.9 2.9-37 12.8L751.7 474.3 548.3 246.6c-1.4-1.5-2.8-2.9-4.3-4.2l-0.2-0.2c-16.9-15.1-42.8-13.6-57.8 3.3L280.8 475.3 119.9 360.6c-9.1-9.5-22.5-14.5-36.5-12.2-17.5 2.9-30.6 16.6-33.5 33.2-1.3 6.5-1 13.2 0.9 19.5l86.9 398.8c0.2 5.3 1.4 10.3 3.4 14.9 6.9 17.7 25.5 28.8 44.9 25.5 1.4-0.2 2.8-0.5 4.2-0.9h661.4c13.3 0 25.1-6.3 32.6-16.1 4.3-5.3 7.4-11.8 8.6-19.1l87.1-401.3z" fill="#ea9518" p-id="11024"></path><path d="M515.2 21.5c-69.1 0-125 56-125 125s56 125 125 125 125-56 125-125-55.9-125-125-125z" fill="#ea9518" p-id="11025"></path></svg></span>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <el-dialog class="AddFileDialog" :visible.sync="dialogAddFileVisible" top="40vh">
+            <div class="afd_container">
+                <div class="afd_header">
+                    <div class="afd_h_img"><img :src="upload_file_info.src"/></div>
+                    <div class="afd_h_itle">{{upload_file_info.name}}</div>
+                </div>
+                <div class="afd_body">
+                    <p>添加评论(可选)</p>
+                     <mutliline-input ref="afd" @send="sendFileMsg($event)" class="afd_body_input"></mutliline-input>
+
+                    <el-popover
+                        placement="bottom-end"
+                        width="400"
+                        :visible-arrow="false"
+                        trigger="click">
+                        <input-emoji @emj="insertEmojiComment($event)"></input-emoji>
+                            <svg  slot="reference" t="1585058528207" class="icon afd_body_emoji" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18584" width="30" height="30"><path d="M902.79287787 512.54199573c0 215.90333227-175.0233216 390.9266528-390.9252736 390.92665387S120.9437088 728.445328 120.9437088 512.54199573c0-215.90057387 175.0233216-390.92389547 390.92527467-390.9238944 51.98472213 0 101.60148693 10.14621973 146.9746848 28.56856534 143.063488 58.08734827 243.9492096 198.44223573 243.9492096 362.35532906z" fill="#FBDF6C" p-id="18585"></path><path d="M586.33067733 845.7578016c-215.90195307 0-390.9252736-175.0233216-390.9252736-390.9252736 0-115.34722133 49.9698208-219.0132576 129.4294624-290.56637867C198.27260373 228.9760544 111.63186027 360.64107733 111.63186027 512.54199573c0 215.90333227 175.0233216 390.9266528 390.9252736 390.92665387 100.55197333 0 192.2279008-37.9783328 261.4958112-100.3547584-53.32109333 27.2611552-113.72399147 42.64391147-177.72226774 42.6439104z" fill="#FAC56B" p-id="18586"></path><path d="M285.4291392 485.27670293c-29.0305728 0-52.56671253 23.53338133-52.56671253 52.56533334h105.13480426c-0.0027584-29.0305728-23.53613973-52.56533333-52.56809173-52.56533334z m458.5161696 0c-29.0291936 0-52.56671253 23.53338133-52.56671253 52.56533334H796.51340053c0.0013792-29.0305728-23.53338133-52.56533333-52.56809173-52.56533334z" fill="#F8A880" p-id="18587"></path><path d="M345.77825173 391.53622613c0-20.51171947 16.69016533-37.19912747 37.20050667-37.19912746s37.20188587 16.68740693 37.20188587 37.19912746c0 8.7836448 7.11904107 15.90268587 15.9013056 15.90268587 8.7836448 0 15.90268587-7.12042027 15.90268586-15.90268587 0-38.05004693-30.9572096-69.00725653-69.00863573-69.00725653-38.05142613 0-69.00725653 30.9572096-69.00725653 69.00725653 0 8.7836448 7.12042027 15.90268587 15.90130666 15.90268587 8.78916053 0 15.9082016-7.11766187 15.9082016-15.90268587M646.4025856 322.5303488c-38.05004693 0-69.00725653 30.9558304-69.00725653 69.00725653 0 8.7836448 7.12042027 15.90406507 15.90268586 15.90406507 8.7808864 0 15.90268587-7.12042027 15.90268587-15.90406507 0-20.51171947 16.68878613-37.19912747 37.1991264-37.19912746 20.51171947 0 37.20188587 16.68740693 37.20188587 37.19912746 0 8.7836448 7.12042027 15.90406507 15.90268586 15.90406507s15.90130667-7.12042027 15.9013056-15.90406507c0.0041376-38.05142613-30.9503136-69.00725653-69.00311893-69.00725653" fill="#7D164A" p-id="18588"></path><path d="M514.6892928 798.22351467c-113.00684693 0-204.6179552-91.60972907-204.6179552-204.6179552h409.23315307c0.0013792 113.00822613-91.61110827 204.6179552-204.61519787 204.6179552z" fill="#FFFFFF" p-id="18589"></path><path d="M330.1886272 682.18535253a204.560032 204.560032 0 0 0 19.04571093 31.80537067h330.90990934a204.52417493 204.52417493 0 0 0 19.04709013-31.80537067H330.1886272z" fill="#E6E6E6" p-id="18590"></path><path d="M514.6892928 818.41251947c-118.76882987 0-215.3944352-96.62560533-215.3944352-215.393056 0-13.9250208 11.32812907-25.25314987 25.25315093-25.25314987h380.2798112c13.9236416 0 25.25314987 11.32812907 25.25314987 25.25314987 0 118.76745067-96.62422613 215.393056-215.3916768 215.393056zM324.54800853 598.7165952a4.30700587 4.30700587 0 0 0-4.30286933 4.30286827c0 107.21590293 87.22687147 194.4413952 194.4441536 194.44139626 107.21452373 0 194.4413952-87.22687147 194.4413952-194.44139626 0-2.37209387-1.9293952-4.30286827-4.30286827-4.30286827h-380.2798112z" fill="#7D164A" p-id="18591"></path><path d="M514.6879136 919.58234027c-55.07671893 0-108.51228053-10.79027093-158.82412373-32.07016214-48.58931733-20.55171413-92.22344-49.9698208-129.69011734-87.4364992-37.46667733-37.46805653-66.884784-81.1021792-87.43649813-129.69011626-21.28127147-50.3132224-32.0701632-103.748784-32.0701632-158.82550294s10.79027093-108.51228053 32.0701632-158.8241248c20.55171413-48.58931733 49.9684416-92.22344 87.43649813-129.69011626s81.1008-66.884784 129.69011734-87.4364992c50.31184427-21.28127147 103.748784-32.0701632 158.82412373-32.07016214s108.51228053 10.79027093 158.82412373 32.07016214c48.58931733 20.55171413 92.2220608 49.9684416 129.69011734 87.4364992 37.46667733 37.46667733 66.884784 81.1008 87.43649813 129.69011626 21.27989227 50.31184427 32.0701632 103.748784 32.0701632 158.8241248 0 55.07671893-10.79027093 108.51228053-32.0701632 158.82550294-20.55171413 48.58793813-49.9698208 92.2220608-87.43649813 129.69011626-37.46805653 37.46667733-81.1008 66.884784-129.69011734 87.4364992-50.31184427 21.27851307-103.7474048 32.0701632-158.82412373 32.07016214z m0-786.9450336c-208.93875307 0-378.92275307 169.984-378.92275307 378.92275306 0 208.93875307 169.984 378.92275307 378.92275307 378.922752s378.92275307-169.984 378.92275307-378.922752c0-208.93875307-169.984-378.92275307-378.92275307-378.92275306z" fill="#7D164A" p-id="18592"></path></svg>
+                        </el-popover>
+                </div>
+                <div class="afd_footer">
+                    <button @click="upload()">上传</button>
+                    <button @click="unsetUpload()">取消</button>
+                </div>
+            </div>
+        </el-dialog>
+        
     </div>
 </template>
 
 <script>
+import { uuid } from 'vue-uuid';
+import moment from 'moment'
 import { mapGetters } from 'vuex'   
 import message from './message'
 import emoji from './emoji'
@@ -108,29 +139,172 @@ export default {
         return {
             uid: this.$route.params.id,
             isgroup: this.$route.params.isgroup,
+            chat_name: this.$route.params.name,
             ismemside: false,
-            friend_info: {}
+            dialogAddFileVisible: false,
+            friend_info: {},
+            upload_file_info:{
+                name: '',
+                size: 0,
+                mtype:'',
+                type: '',
+                width: 0,
+                height: 0,
+                src:''
+            }
         }
     },
     updated(){
        var div = document.getElementById('data-list-content')
-        div.scrollTop = div.scrollHeight
+       if(div&&div.scrollHeight){
+            div.scrollTop = div.scrollHeight
+        }
     },
     methods:{
+        fileUpload(e){
+            let file = this.$refs.file_input.files[0]
+             let type = file.type
+            let file_info = {
+                name: file.name,
+                size: file.size,
+                mtype:_.split(type, '/')[0],
+                type: file.type,
+                width: 0,
+                height: 0,
+                src:''
+
+            }
+           
+            if(_.split(type, '/')[0]=='image'){
+                //  console.log(file)
+                var createReader = function(file, whenReady) {
+                    var reader = new FileReader;
+                    reader.onload = function (evt) {
+                        var image = new Image();
+                        image.onload = function () {
+                            var width = this.width;
+                            var height = this.height;
+                            if (whenReady) whenReady(width, height);
+                        };
+                        image.src = evt.target.result;
+                        file_info.src = image.src
+                    };
+                    reader.readAsDataURL(file);
+                }
+                createReader(file,  (w, h)=>{ file_info.width=w;file_info.height=h;});
+
+            }
+            console.log(file_info)
+            this.upload_file_info = file_info
+            this.dialogAddFileVisible = true
+           
+        },
+        file_select(){
+            this.$refs.file_input.click()
+        },
         insertEmoji(e){
             this.$refs.mip.addemj(e)
             this.$refs.mip.click_to_focus()
+            this.$refs.click_nothing.click()
+        },
+        message_with_head(idx){
+            if(idx>0){
+                let ml = this.getMsgList(this.uid)
+                if(ml[idx].sender == ml[idx-1].sender){
+                    let t = moment(ml[idx-1].timestamp).add(60, 'seconds').valueOf()
+                    if(t >= ml[idx].timestamp){
+                        return false
+                    }
+                }
+            }
+            return true
+        },
+        sendGif(e){
+            this.$refs.click_nothing.click()
+            let msgid = uuid.v4();
+            this.$store.commit('msglist_add',{
+                chat_id: this.uid,
+                msg_id: msgid,
+                msg_type: 'image',
+                timestamp: Date.now(),
+                sender: this.$store.state.me.base.me_id,
+                receiver: this.uid,
+                innerText: [],
+                content: {
+                    src: e.url,
+                    width: e.width,
+                    height: e.height,
+                    fileName: 'gif',
+                    fileSize: e.size,
+                    mtype: 'image',
+                    type: 'image'
+                }
+            })
+
+            
+            let op = 0
+            if(this.isgroup){
+                op = 1
+            }
+            let body = {
+                op: op,
+                msg: {
+                    msg_id: msgid,
+                    msg_type: 'image',
+                    sender: this.$store.state.me.base.me_id,
+                    receiver: this.uid,
+                    innerText: [],
+                    content: {
+                        src: e.url,
+                        width: e.width,
+                        height: e.height,
+                        fileName: 'gif',
+                        fileSize: e.size,
+                        mtype: 'image',
+                        type: 'image'
+                    }
+                }
+            }
+            this.$gws.ws.send(JSON.stringify(body))
+
+
+        },
+        upload(){
+            this.$refs.afd.enterToSend()
+            this.dialogAddFileVisible = false
+        },
+        unsetUpload(){
+            this.$refs.file_input.value = null
+            this.dialogAddFileVisible = false
+        },
+        insertEmojiComment(e){
+            this.$refs.afd.addemj(e)
+            this.$refs.afd.click_to_focus()
         },
         get_friend_info(uid){
-            let idx = _.findIndex(this.$store.state.chat_list.clist, (o)=>{ return o.chat_id == uid; })
+            console.log("get_friend_info")
+            let idx = _.findIndex(this.$store.state.chat_list.clist, (o)=>{ return o.uid == uid; })
             if(idx>=0){
+                
                 this.friend_info = this.$store.state.chat_list.clist[idx]
+                console.log("get_friend_info",this.friend_info)
+                this.isgroup = this.friend_info.is_group
+                this.chat_name = this.friend_info.chat_name
             }
         },
-        sendMsg(e){
+        get_group_member(){
+            if(this.isgroup){
+                if(this.$store.state.group_member.members[this.uid]){
+                    return this.$store.state.group_member.members[this.uid]
+                }
+            }
+            return []
+        },
+        parseMultiInputText(e){
             e = _.replace(e, /<br>/g, '\n')
             e = _.replace(e, /<\/div>/g, '<div>')
             e = _.replace(e, /<div><div>/g, '<div>')
+            e = _.replace(e, /&nbsp;/g, '')
         
             e = _.split(e, '<div>')
             let msg = []
@@ -139,20 +313,80 @@ export default {
                     msg.push(i)
                 }   
             }
-
+            return msg
+        },
+        sendMsg(e){
             //todo sendmsg
+            let msgid = uuid.v4();
+            let op = 0
+            if(this.isgroup){
+                op = 1
+            }
+            let body = {
+                op: op,
+                msg: {
+                    msg_id: msgid,
+                    msg_type: 'text',
+                    sender: this.$store.state.me.base.me_id,
+                    receiver: this.uid,
+                    innerText: this.parseMultiInputText(e),
+                }
+            }
+            console.log("send message")
+            this.$gws.ws.send(JSON.stringify(body))
             this.$store.commit('msglist_add',{
                 chat_id: this.uid,
                 msg_type: 'text',
+                sender: this.$store.state.me.base.me_id,
+                receiver: this.uid,
+                innerText: this.parseMultiInputText(e),
+                content: {}
+            })
+        },
+        sendFileMsg(e){
+            console.log('send')
+            let file = this.$refs.file_input.files[0]  
+            let src = ""
+            let param = new FormData();
+            param.append('file',file);
+
+            //////////////////////////
+            let mtype = 'image';
+            if(this.upload_file_info.mtype != mtype){
+                mtype = 'file'
+            }
+            let msgid = uuid.v4();
+            let payload = {
+                chat_id: this.uid,
+                msg_id: msgid,
+                msg_type: mtype,
                 timestamp: Date.now(),
                 sender: this.$store.state.me.base.me_id,
-                receiver: this.friend_info.chat_user_id,
+                receiver: this.uid,
+                innerText: this.parseMultiInputText(e),
                 content: {
-                    text: {
-                        innerText: msg
-                    }
-                }
-            })
+                    src: src,
+                    width: 0,
+                    height: 0,
+                    fileName: this.upload_file_info.name,
+                    fileSize: this.upload_file_info.size,
+                    mtype: mtype,
+                    type: this.upload_file_info.type
+                },
+                uploadPercentage: 1,
+                param: param,
+                isgroup: this.isgroup
+            }
+            if(mtype=='image'){
+                payload.msg_type = 'image'
+                payload.content.width  = this.upload_file_info.width
+                payload.content.height = this.upload_file_info.height
+            }
+            this.$store.commit('msglist_add',payload)
+            /////////////////////////////////////////////////////////////////////
+            
+
+            this.unsetUpload()
         }
     },
     computed:{
@@ -165,22 +399,78 @@ export default {
     },
     watch: {
         $route(){
-            this.uid = this.$route.params.id
-            this.isgroup = this.$route.params.isgroup
+             console.log("watch route in chat.vue")
+            this.uid= this.$route.params.id
+            this.isgroup=this.$route.params.isgroup
+            this.chat_name= this.$route.params.name
             if(this.$route.path.split('/')[1]!='master'||this.$route.path.split('/')[2]!='chat') {return}
-            if(_.findIndex(this.$store.state.chat_list.clist, (o)=>{ return o.chat_id == this.uid; })<0){
+            if(_.findIndex(this.$store.state.chat_list.clist, (o)=>{ return o.uid == this.uid; })<0){
+               
                this.$router.push({name: 'me'}).catch(() => {})
             }
-            this.get_friend_info(this.$route.params.id)
+
+            if(this.isgroup){
+                this.$axios.post('http://localhost:9876/api/group_member', {"gid": this.uid})
+                    .then((response) =>{
+                        console.log(response);
+                        if(response.status == 200 && response.data.code == 1001){
+                            this.$store.commit("save_group_member",{
+                                gid:  this.uid,
+                                memberList: response.data.data
+                            })
+                        }else{
+                            this.$message.error(response.data.message)
+                        }
+                    })
+                    .catch(function (error) {
+                        this.$message.error(error)
+                    });
+            }
+
+            if(this.$store.getters.getMsgList(this.$route.params.id).length==0){
+           this.$axios.post("http://localhost:9876/api/message",{
+               uid: this.$route.params.id,
+               is_group: this.isgroup,
+               index: 0,
+               limit: 50
+           }).then((response) =>{
+                console.log(response);
+                if(response.status == 200 && response.data.code == 1001){
+                    console.log(response.data.data)
+                    for(let i=0;i<response.data.data.length;i++){
+                        let payload = response.data.data[i]
+                        this.$store.commit("msglist_add",{
+                            chat_id: this.$route.params.id,
+                            msg_id: payload.msg_id,
+                            msg_type: payload.msg_type,
+                            timestamp: payload.timestamp/1000000,
+                            sender: payload.sender,
+                            receiver: payload.receiver,
+                            innerText: payload.innerText,
+                            content: payload.content
+                        })
+                    }
+                    
+                }else{
+                    this.$message.error(response.data.message)
+                }
+            })
+            .catch(function (error) {
+                this.$message.error(error)
+            });
+       }
         }
+
+        
     },
     mounted: function(){
         
         var div = document.getElementById('data-list-content')
-        div.scrollTop = div.scrollHeight
-
+        if(div&&div.scrollHeight){
+            div.scrollTop = div.scrollHeight
+        }
         this.get_friend_info(this.$route.params.id)
-        
+
        
     },
     components: {
@@ -338,6 +628,7 @@ export default {
     padding-right: 100px;
 }
 .chat_input_add{
+    position: relative;
     margin: 6px;
 }
 .chat_input_face{
@@ -403,7 +694,7 @@ export default {
     height: 44px;
     padding: 1px 2px 1px 12px;
     
-    margin-top: 1px;
+    margin: 2px 8px;
     border-radius: 4px;
     display: flex;
     flex-direction: row;
@@ -415,7 +706,7 @@ export default {
 }
 .chat_member_sidebar_list_item>h3{
     max-width: 135px;
-    font-size: 16px;
+    font-size: 14px;
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
@@ -432,5 +723,105 @@ export default {
 }
 .chat_header_info_icon_status{
     margin-left: 15px;
+}
+
+.AddFileDialog .el-dialog{
+    width: 530px;
+    height: 100px;
+    border-radius: 10px;
+    background-color: #36393f;
+}
+.chat_input_add>input{
+    display: none;
+}
+.afd_container{
+    width: 100%;
+    border-radius: 10px;
+     background-color: #36393f;
+}
+.afd_header{
+    height: 78px;
+    position: relative;
+    padding: 6px 0px 0px 20px;
+    display: flex;
+    flex-direction: row;
+}
+.afd_h_img{
+    height: 104px;
+    width: 104px;
+    position: relative;
+    top: -40px;
+    bottom: 0px;
+    border-radius: 8px;
+    background-color: #fff;
+}
+.afd_h_img>img{
+    height: 104px;
+    width: 104px;
+    border-radius: 8px;
+}
+.afd_h_itle{
+    font-size: 19px;
+    font-weight: bold;
+    color: rgb(228, 228, 228);
+    padding: 0px 16px;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+    padding-top: 10px;
+    
+}
+.afd_footer{
+    height: 78px;
+    display: flex;
+    flex-direction: row-reverse;
+    align-items: center;
+    background-color:#2d2f33 ;
+    border-bottom-right-radius: 8px;
+    border-bottom-left-radius: 8px;
+}
+.afd_footer>button{
+    height: 40px;
+    width: 96px;
+    outline: none;
+    border: none;
+    background-color: #7289da;
+    border-radius: 4px;
+    margin: 0px 10px;
+    color: wheat;
+}
+.afd_body{
+    position: relative;
+    min-height: 120px;
+    padding: 10px 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    
+}
+.afd_body>p{
+    width: 100%;
+    margin: unset;
+    font-size: 12px;
+    font-weight: bold;
+}
+.afd_body_input .mtl_inp_container{
+    border-radius: 100px;
+}
+.afd_body_input .mtl_inp_raw_in_extra{
+    border: unset;
+    border-radius: 100px;
+    padding-right: 50px;
+}
+.afd_body_emoji{
+    position: absolute;
+    top: 34px;
+    right: 30px;
+}
+
+.chat_name_title{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
 }
 </style>

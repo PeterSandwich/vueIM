@@ -1,44 +1,90 @@
 
+import axios from "axios"
 const myself={
     state: { 
         base:{
-            me_id: 1606100136,
-            me_fixid: '8888',
-            me_name: '潘家炜',
-            me_sd_status_keep_time: 0,
-            me_sd_status: '😁正在玩switch',
-            me_sd_status_exsit: true,
-            me_status: 1,
-            me_email: 'TX1606100136@hc.com',
-            me_headimg: 'https://images.unsplash.com/photo-1494236536165-dab4d859818b?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=600&q=60'
+            me_id: window.localStorage.getItem('user_id_cache'),
+            me_fixid: window.localStorage.getItem('user_fixid_cache'),
+            me_name: window.localStorage.getItem('user_name_cache'),
+            me_email: window.localStorage.getItem('user_email_cache'),
+            me_status: window.localStorage.getItem('status_cache'),
+            me_headimg: window.localStorage.getItem('user_avatar_cache')
         },
-        
-        me_open_microphone: true,
-        me_open_earphone:false
+        setting: window.localStorage.getItem('user_setting_cache')
      },
     mutations: {
+        setBase(state,payload){
+
+            state.base.me_id = payload.uid
+            window.localStorage.setItem("user_id_cache",payload.uid)
+
+            state.base.me_fixid = payload.fix_id
+            window.localStorage.setItem("user_fixid_cache",payload.fix_id)
+
+            state.base.me_name =payload.name
+            window.localStorage.setItem("user_name_cache",payload.name)
+
+            state.base.me_headimg = payload.avatar
+            window.localStorage.setItem("user_avatar_cache",payload.avatar)
+
+            state.base.me_email =payload.email
+            window.localStorage.setItem("user_email_cache",payload.email)
+            
+            var status = {
+                status: 1,
+                self_defind_status: payload.self_defind_status,
+                self_defind_status_deadline: payload.self_defind_status_deadline,
+                me_sd_status_exsit:false
+            }
+            if(payload.self_defind_status.me_sd_status!=""){
+                status.me_sd_status_exsit=true
+            }
+            state.base.me_status = JSON.stringify(status)
+            window.localStorage.setItem("status_cache",state.base.me_status)
+
+            var setting ={
+                me_open_microphone: false,
+                me_open_earphone:false
+            }
+            state.setting = JSON.stringify(setting)
+            window.localStorage.setItem("user_setting_cache",state.setting)
+        },
         switch_microphone (state) {
-            state.me_open_microphone = !state.me_open_microphone
+
+            var tmp =JSON.parse(window.localStorage.getItem("user_setting_cache"))
+            tmp.me_open_microphone = !tmp.me_open_microphone
+            state.setting = JSON.stringify(tmp)
+            window.localStorage.setItem("user_setting_cache",state.setting)
         },
         switch_earphone (state) {
-            state.me_open_earphone = !state.me_open_earphone
+            var tmp =JSON.parse(window.localStorage.getItem("user_setting_cache"))
+            tmp.me_open_earphone = !tmp.me_open_earphone
+            state.setting = JSON.stringify(tmp)
+            window.localStorage.setItem("user_setting_cache",state.setting)
         },
         switch_status (state,payload) {
-            state.base.me_status = payload
+            var tmp =JSON.parse(window.localStorage.getItem("status_cache"))
+            tmp.status = payload
+            state.base.me_status = JSON.stringify(tmp)
+            window.localStorage.setItem("status_cache",state.base.me_status)
         },
         set_sd_status(state, payload){
-            state.base.me_sd_status = payload.msg
-            state.base.me_sd_status_keep_time = payload.keep_time
-            if(state.base.me_sd_status){
-                
-                state.base.me_sd_status_exsit = true
-                console.log('sadasdasda')
+            var tmp = JSON.parse(window.localStorage.getItem("status_cache"))
+            tmp.me_sd_status = payload.msg.trim()
+            tmp.me_sd_status_keep_time = payload.keep_time
+            if(tmp.me_sd_status!=""){
+                tmp.me_sd_status_exsit = true
             }
+            state.base.me_status = JSON.stringify(tmp)
+            window.localStorage.setItem("status_cache",state.base.me_status)
         },
         clear_status(state){
-            state.base.me_sd_status_exsit = false
-            state.base.me_sd_status = ''
-            state.base.me_sd_status_keep_time = 0
+            var tmp = JSON.parse(window.localStorage.getItem("status_cache"))
+            tmp.me_sd_status_exsit = false
+            tmp.me_sd_status = ''
+            tmp.me_sd_status_keep_time = 0
+            state.base.me_status = JSON.stringify(tmp)
+            window.localStorage.setItem("status_cache",state.base.me_status)
         }
     }
 }
