@@ -101,11 +101,13 @@
             @mouseleave="sideBar_select_hover=0"
             v-bind:class="{sideBar_select_hover_active: sideBar_select_hover==chat_item.uid&&sideBar_select_select!=chat_item.uid, sideBar_select_select_active:sideBar_select_select==chat_item.uid}">
             <div class="sideBar_select_w" @contextmenu="showContextMenu($event, chat_item)">
+              <el-badge :value="chat_item.unread_count" :hidden="chat_item.unread_count<=0" :max="99" class="item">
               <user-head style="height: 32px;width: 32px;" :headimg="chat_item.avatar"
                 v-bind:with_status="!chat_item.is_group" v-bind:user_status="chat_item.user_status"
                 v-bind:bg_color="'#2f3136'"></user-head>
+              </el-badge>
               <div class="sideBar_select_ic">{{chat_item.chat_name}}</div>
-              <div v-if="sideBar_select_hover==chat_item.uid" @click="delete_chat(chat_item.uid)">
+              <div v-if="sideBar_select_hover==chat_item.uid&&!chat_item.is_group" @click="delete_chat(chat_item.uid)">
                 <svg class="closeIcon-rycxaQ" aria-hidden="false" width="24" height="24" viewBox="0 0 24 24">
                   <path fill="currentColor"
                     d="M18.4 4L12 10.4L5.6 4L4 5.6L10.4 12L4 18.4L5.6 20L12 13.6L18.4 20L20 18.4L13.6 12L20 5.6L18.4 4Z">
@@ -170,9 +172,9 @@
               <div class="sideBar_me_change_status_slash"></div>
               <div class="sideBar_me_change_status_item" @click="dialogStatusVisible=true">
                 <div class="smci_0">
-                  <div v-if="me_base.me_sd_status_exsit" class="smci_0">
+                  <div v-if="me_all_status.self_defind_status!=''" class="smci_0">
                     <div class="smci_1 smci_3">
-                      {{me_base.me_sd_status}}
+                      {{me_all_status.self_defind_status}}
                     </div>
                     <div>
                       <svg @click="clear_status()" t="1585471045811" class="icon" viewBox="0 0 1024 1024" version="1.1"
@@ -195,7 +197,7 @@
           </div>
           <div class="sideBar_me_info">
             <div class="sideBar_me_info_name">{{me_base.me_name}}</div>
-            <div class="sideBar_me_info_num" v-if="me_base.me_sd_status_exsit&&me_status_fixid_switch">{{me_base.me_sd_status}}</div>
+            <div class="sideBar_me_info_num" v-if="me_all_status.self_defind_status!=''&&me_status_fixid_switch">{{me_all_status.self_defind_status}}</div>
             <div class="sideBar_me_info_num" v-else>#{{me_base.me_fixid}}</div>
           </div>
           <div class="sideBar_me_setting">
@@ -438,6 +440,7 @@
           num: 0,
           dsc: '今天'
         },
+        chatlistTimeout: null,
         create_chat_list_friends_to_select: [],
         create_chat_max_members: 0,
         contextMenu: {
@@ -452,6 +455,7 @@
     },
     created: function () {
       this.sideBar_select_select = this.selectActive(this.$route.path)
+      
     },
     mounted: function () {
       document.addEventListener('click', e => {
@@ -459,12 +463,24 @@
           this.changing_status = false //点击其他区域关闭
         }
       })
-      this.$axios.get('http://localhost:9876/api/chat_list')
+      this.AxiosGetChatList()
+      this.chatlistTimeout = setInterval(this.AxiosGetChatList,20000)
+      
+    },
+    unmounted:function(){
+      window.clearInterval(this.chatlistTimeout)
+    },
+    methods: {
+      AxiosGetChatList(){
+        this.$axios.get('http://localhost:9876/api/chat_list')
         .then((response) =>{
             console.log("chat_list=>",response);
             if(response.status == 200 && response.data.code == 1001){
               this.$store.commit("set_chatlist",response.data.data)
                 
+            }else if(response.data.code == 2010){
+                window.sessionStorage.clear();
+                 this.$router.push('/')
             }else{
                 this.$message.error(response.data.message)
             }
@@ -472,9 +488,7 @@
         .catch(function (error) {
             console.log(error);
         });
-
-    },
-    methods: {
+      },
       showContextMenu(e, chat_item) {
         console.log(chat_item)
         e.preventDefault();
@@ -503,12 +517,37 @@
             num: 0,
             dsc: '今天'
           }
+          this.$axios.post("http://localhost:9876/api/change_sd_status",{
+          self_defind_status: "",
+          self_defind_status_deadline: 0
+          })
+        .then((response)=>{
+          if(response.data.code == 2010){
+                window.sessionStorage.clear();
+                this.$router.push('/')
+          }
+        }).catch((error)=>{
+          console.log(error)
+        })
       },
       save_status() {
         this.dialogStatusVisible = false
         this.$store.commit('set_sd_status', {
           msg: this.self_df_status_emj + this.self_df_status_msg,
           keep_time: this.status_time_downlist_value.num
+        })
+
+        this.$axios.post("http://localhost:9876/api/change_sd_status",{
+          self_defind_status: this.self_df_status_emj + this.self_df_status_msg,
+          self_defind_status_deadline: this.status_time_downlist_value.num
+          })
+        .then((response)=>{
+          if(response.data.code == 2010){
+                window.sessionStorage.clear();
+                this.$router.push('/')
+          }
+        }).catch((error)=>{
+          console.log(error)
         })
       },
       dont_save_status() {
@@ -563,7 +602,9 @@
         return '#8a8a8a'
       },
       sideBar_select_click: function (e, item) {
+         
         if (e == 'chat') {  
+          this.$store.commit("clear_unread",item.uid)
           console.log("goto:",item)
           this.$router.push({
             name: 'chat',
@@ -573,6 +614,11 @@
               isgroup: item.is_group
             }
           }).catch(() => {})
+          this.$axios.post("http://localhost:9876/api/clear_unread",{
+            uid: item.uid,
+            isgroup: item.is_group
+          }).then((response)=>{})
+          .catch((error)=>{})
         } else {
           if (e == 'friend') {
             this.$router.push({
@@ -584,6 +630,8 @@
             }).catch(() => {})
           }
         }
+
+       
 
       },
       delete_chat: function (chat_id) {
@@ -619,6 +667,15 @@
       change_status: function (s) {
         this.$store.commit('switch_status', s)
         this.changing_status = false
+        this.$axios.post("http://localhost:9876/api/change_status",{status: s})
+        .then((response)=>{
+          if(response.data.code == 2010){
+                window.sessionStorage.clear();
+                this.$router.push('/')
+          }
+        }).catch((error)=>{
+          console.log(error)
+        })
       },
       create_chat(member) {
         console.log(member)
@@ -657,7 +714,9 @@
                     avatar: body.avatar,
                     member_count: body.members.length,
                   })
-              }else{
+              }else if(response.data.code == 2010){
+                window.sessionStorage.clear();
+            }else{
                   this.$message.error(response.data.message)
               }
           })
@@ -683,21 +742,19 @@
         return this.self_df_status_emj || this.self_df_status_msg
       },
       me_open_microphone() {
-        console.log(this.$store.state.me.setting)
-        var tmp = JSON.parse(this.$store.state.me.setting)
-        return tmp.me_open_microphone
+        return this.$store.state.me.setting.me_open_microphone
       },
       me_open_earphone() {
-        var tmp = JSON.parse(this.$store.state.me.setting)
-        return tmp.me_open_earphone
+        return this.$store.state.me.setting.me_open_earphone
       },
       me_base() {
         return this.$store.state.me.base
       },
       me_status() {
-        var tmp = JSON.parse(this.$store.state.me.base.me_status)
-        console.log(tmp)
-        return tmp.status
+        return this.$store.state.me.base.me_status.status
+      },
+      me_all_status() {
+        return this.$store.state.me.base.me_status
       },
       ...mapGetters([
         'getChatList'

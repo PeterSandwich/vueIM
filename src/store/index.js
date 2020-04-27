@@ -13,7 +13,7 @@ import group_member from './modules/group_member'
 import chat_message from './modules/chat_message.js'
 
 const vuexPersist = new VuexPersistence({
-    storage: localStorage
+    storage: sessionStorage
   });
 
   

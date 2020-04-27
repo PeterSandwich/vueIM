@@ -114,7 +114,7 @@ const router = new Router({
 // 判断是否需要登录权限 以及是否登录
 router.beforeEach((to, from, next) => {
   if (to.matched.some(res => res.meta.requireAuth)) { // 判断是否需要登录权限
-    if (window.localStorage.getItem('user_id_cache')) { // 判断是否登录
+    if (store.state.me.base.me_id!='') { // 判断是否登录window.localStorage.getItem('user_id_cache')
       next()
     } else { // 没登录则跳转到登录界面
       next({
@@ -125,7 +125,7 @@ router.beforeEach((to, from, next) => {
       })
     }
   } else if(to.matched.some(res => res.meta.requireOperation)) {
-    if (window.localStorage.getItem('user_id_cache')) {
+    if (store.state.me.base.me_id!='') {
       next({
         path: '/',
         query: {

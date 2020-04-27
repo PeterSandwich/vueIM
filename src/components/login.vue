@@ -76,6 +76,9 @@ export default {
                 this.$message({ message: '登录成功',type: 'success'})
                 this.$store.commit('setBase',response.data.data)
                    this.tohome()
+            }else if(response.data.code == 2010){
+                window.sessionStorage.clear();
+                this.$router.push('/')
             }else{
                 this.$message.error(response.data.message)
             }

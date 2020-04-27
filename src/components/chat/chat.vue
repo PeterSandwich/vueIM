@@ -39,7 +39,7 @@
             <div class="chat_dispaly_area">
                 <div class="chat_win">
                     <div class="chat_win_list" id="data-list-content">
-                        <message v-for="(m,index) in getMsgList(uid)" v-bind:key="m.msg_id" :chat_id="uid" :msg="m" v-bind:with_head="message_with_head(index)"></message>
+                        <message v-for="(m,index) in getMsgList(uid)" v-bind:key="m.msg_id" :chat_id="uid" :msg="m" v-bind:with_head="message_with_head(index)" @del_msg="del_msg($event)"></message>
                     </div>
                 </div>
                 <div class="chat_input">
@@ -336,9 +336,11 @@ export default {
             this.$gws.ws.send(JSON.stringify(body))
             this.$store.commit('msglist_add',{
                 chat_id: this.uid,
+                msg_id: msgid,
                 msg_type: 'text',
                 sender: this.$store.state.me.base.me_id,
                 receiver: this.uid,
+                timestamp: Date.now(),
                 innerText: this.parseMultiInputText(e),
                 content: {}
             })
@@ -387,6 +389,26 @@ export default {
             
 
             this.unsetUpload()
+        },
+        del_msg(e){
+            console.log("del",e)
+            let op = 10
+            if(this.isgroup){
+                op = 11
+            }
+            let body = {
+                op: op,
+                msg: {
+                    msg_id: e.msg_id,
+                    sender:e.sender,
+                    receiver: e.receiver
+                }
+            }
+            this.$gws.ws.send(JSON.stringify(body))
+            this.$store.commit('msglist_del',{
+                chat_id: this.uid,
+                msg_id: e.msg_id
+            })
         }
     },
     computed:{

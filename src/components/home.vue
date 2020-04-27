@@ -208,12 +208,13 @@ export default {
             console.log("onmessage")
             console.log(event.data)
             let data = JSON.parse(event.data)
-            let payload = data.msg
-            let chat_id = payload.sender
-            if(data.op==1){
-                chat_id = payload.receiver
-            }
-            this.$store.commit("msglist_add",{
+             let payload = data.msg
+            if(data.op==0||data.op==1){
+                let chat_id = payload.sender
+                if(data.op==1){
+                    chat_id = payload.receiver
+                }
+                this.$store.commit("msglist_add",{
                             chat_id: chat_id,
                             msg_id: payload.msg_id,
                             msg_type: payload.msg_type,
@@ -223,6 +224,19 @@ export default {
                             innerText: payload.innerText,
                             content: payload.content
                         })
+                this.$store.commit("chatlist_change",chat_id)
+            }
+            if(data.op==10||data.op==11){
+                let chat_id = payload.sender
+                if(data.op==11){
+                    chat_id = payload.receiver
+                }
+                this.$store.commit("msglist_del",{
+                    chat_id: chat_id,
+                    msg_id: payload.msg_id
+                })
+            }
+            
         },
         onopen:function(){
              console.log("onopen")

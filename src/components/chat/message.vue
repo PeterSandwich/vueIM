@@ -67,7 +67,10 @@
                 </div>
             </div>
         </div>
-        <div class="msg_op"></div>
+        <div class="msg_op" v-if="isMeSend" @click="delete_msg()">
+            <svg t="1587781189309" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="3722" width="22" height="22"><path d="M656 288h144a16 16 0 0 1 16 16v16a16 16 0 0 1-16 16h-48v496a16 16 0 0 1-16 16H288a16 16 0 0 1-16-16V336h-48a16 16 0 0 1-16-16v-16a16 16 0 0 1 16-16h144v-80a16 16 0 0 1 16-16h256a16 16 0 0 1 16 16v80z m-48 0v-48H416v48h192z m32 48H320v464h384V336h-64z m-208 112h16a16 16 0 0 1 16 16v192a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V464a16 16 0 0 1 16-16z m144 0h16a16 16 0 0 1 16 16v192a16 16 0 0 1-16 16h-16a16 16 0 0 1-16-16V464a16 16 0 0 1 16-16z" p-id="3723" fill="#dbdbdb"></path></svg>
+            <p>删除</p>
+        </div>
     </div>
 </template>
 <script>
@@ -103,10 +106,11 @@ export default {
             let Hm = moment(value).format("HH:mm")
             let p = moment().day(0).valueOf()
             let pp = moment().day(-7).valueOf()
-            if(value>pp && value<=p){
-                return '上'+weekday+Hm
-            }else if (value > p){
+            let ppp = moment().day(-7-7).valueOf()
+            if(value >= pp){
                 return weekday+Hm
+            }else if(value >= ppp){
+                return '上'+weekday+Hm
             }else{
                 return moment(value).format("YYYY/MM/DD HH:mm")
             }
@@ -125,6 +129,9 @@ export default {
             return "width:" + 
             w+
             "px;height:"+h+"px; background-color: #9191911f;;"
+        },
+        isMeSend(){
+            return this.$store.state.me.base.me_id == this.msg.sender
         }
     },
     mounted: function(){
@@ -200,6 +207,9 @@ export default {
     methods:{
         cancel(){
             this.source.cancel('Operation canceled by the user.');
+        },
+        delete_msg(){
+            this.$emit('del_msg',this.msg)
         }
     },
     data:function(){
@@ -306,9 +316,22 @@ export default {
     right: 20px;;
     z-index: 99;
     border-radius: 4px;
+
+    
 }
 .msg_container:hover .msg_op{
-    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-self: center;
+    color: red;
+    padding-left: 10px;
+}
+.msg_op>p{
+    /* height: 32px;; */
+    font-size: 14px;;
+    margin-bottom: 0rem;
+    line-height: 32px;
 }
 .filestyle{
     width: 520px;

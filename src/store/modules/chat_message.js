@@ -21,8 +21,7 @@ const chat_message={
             //         }
             //     ]
             // }
-        ],
-        percentage:{}
+        ]
      },
     getters:{
         getMsgList: (state) => (chat_id) => {
@@ -31,10 +30,6 @@ const chat_message={
                 return state.msglist[idx].messages
             }
             return []
-        },
-        MsguploadPercentage: (state) => {
-            console.log("In MsguploadPercentage")
-            return state.percentage
         }
     },
     mutations: {
@@ -50,8 +45,14 @@ const chat_message={
         },
         msglist_del(state,payload){
             let idx = _.findIndex( state.msglist, function(o){ return o.chat_id == payload.chat_id;})
+            console.log("msglist_del idx=",idx)
             if(idx>=0){
-                state.msglist[idx].messages = _.filter( state.msglist[idx].messages, function(o){ return o.msg_id != payload.msg_id;})
+                state.msglist[idx].messages = _.remove( state.msglist[idx].messages, function(o) {
+                    console.log(o.msg_id, payload.msg_id)
+                    return o.msg_id != payload.msg_id;
+                });   
+                console.log("msglist_del result=",state.msglist[idx].messages)
+                // state.msglist[idx].messages = _.filter( state.msglist[idx].messages, function(o){ return })
             }
         },
         msglist_add(state, payload){
