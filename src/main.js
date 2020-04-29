@@ -10,26 +10,11 @@ import '@gahing/vcontextmenu/lib/vcontextmenu.css'
 import axios from 'axios';
 import router from './router'
 import g_websocket from './g_websocket'
-// import VueSocketIO from 'vue-socket.io'
 import UUID from 'vue-uuid';
  
 Vue.use(UUID);
 Vue.use(ContextMenu)
 Vue.use(ElementUI);
-
-// Vue.use(new VueSocketIO({
-//     debug: true,
-//     connection: 'ws://localhost:9876/ws',
-//     vuex: {
-//         store,
-//         actionPrefix: 'SOCKET_', //为vuex设置的两个前缀
-//         mutationPrefix: 'SOCKET_'
-//     }
-//     // options: { path: "/my-app/" } //Optional options
-// }))
-
-
-
 
 Vue.config.productionTip = false
 Vue.prototype.$axios = axios

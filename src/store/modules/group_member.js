@@ -1,4 +1,4 @@
-
+let _ = require('lodash')
 const group_member = {
     state: { 
         members:{}
@@ -16,6 +16,17 @@ const group_member = {
                 return state.members[playload]
             }
             return []
+        }
+    },
+    mutations:{
+        remove_member(state,payload){
+            console.log(payload)
+            console.log(state.members[payload.gid])
+            if(state.members[payload.gid]){
+                state.members[payload.gid] = _.remove(state.members[payload.gid], function(v) {
+                    return v.uid!=payload.uid;
+                });      
+            }
         }
     }
 }

@@ -8,11 +8,23 @@ const myself={
             me_name: '',//window.localStorage.getItem('user_name_cache'),
             me_email: '',//window.localStorage.getItem('user_email_cache'),
             me_status: {},//window.localStorage.getItem('status_cache'),
-            me_headimg: ''//window.localStorage.getItem('user_avatar_cache')
+            me_headimg: '',
+            me_sex:"",
+            me_age:0,
+            me_city:"",
+            me_telephone:""
         },
         setting: {}//window.localStorage.getItem('user_setting_cache')
      },
     mutations: {
+        change_user_info(state,payload){
+            state.base.me_name = payload.name
+            state.base.me_headimg = payload.avatar
+            state.base.me_sex = payload.sex
+            state.base.me_age = payload.age
+            state.base.me_city = payload.city
+            state.base.me_telephone = payload.telephone
+        },
         setBase(state,payload){
 
             state.base.me_id = payload.uid
@@ -29,6 +41,10 @@ const myself={
 
             state.base.me_email =payload.email
             // window.localStorage.setItem("user_email_cache",payload.email)
+            state.base.me_sex=payload.sex
+            state.base.me_age=payload.age
+            state.base.me_city=payload.city
+            state.base.me_telephone=payload.telephone
             
             var status = {
                 status: 1,

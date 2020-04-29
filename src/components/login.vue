@@ -74,6 +74,7 @@ export default {
             this.fullscreenLoading = false
             if(response.status == 200 && response.data.code == 1001){
                 this.$message({ message: '登录成功',type: 'success'})
+                console.log(response.data.data)
                 this.$store.commit('setBase',response.data.data)
                    this.tohome()
             }else if(response.data.code == 2010){

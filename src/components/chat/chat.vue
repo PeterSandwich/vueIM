@@ -6,7 +6,7 @@
                     <svg v-if="isgroup" t="1584933506312" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19584" width="22" height="22"><path d="M863.6188448 876.86257813A90.56711147 90.56711147 0 0 0 876.08888853 830.80533333V762.31111147c0-100.1244448-90.9312-186.5955552-222.27626666-226.59982294C706.3779552 485.64906667 739.5555552 412.0576 739.5555552 329.9555552c0-49.5616-12.1059552-96.0284448-33.2231104-136.07822187C801.13208853 200.97706667 876.08888853 289.7692448 876.08888853 398.22222187c0 70.76977813-31.85777813 133.16551147-80.41813333 169.9384896 126.11128853 27.30666667 216.95146667 103.90186667 216.95146667 194.1504v69.0403552a45.51111147 45.51111147 0 0 1-45.5111104 45.51111146h-103.49226667zM375.46666667 557.51111147c-125.65617813 0-227.5555552-112.0483552-227.5555552-250.31111147S249.81048853 56.88888853 375.46666667 56.88888853s227.5555552 112.0483552 227.5555552 250.31111147S501.1228448 557.51111147 375.46666667 557.51111147z m364.08888853 318.80533333a91.02222187 91.02222187 0 0 1-91.02222187 91.02222187H102.4a91.02222187 91.02222187 0 0 1-91.02222187-91.02222187V807.82222187C11.37777813 669.55946667 174.39857813 557.51111147 375.46666667 557.51111147s364.08888853 112.0483552 364.08888853 250.3111104v68.49422293z" p-id="19585" ></path></svg>
                     <svg v-else t="1584756017022" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="5933" width="22" height="22"><path d="M618.666667 718.933333c21.333333 19.2 49.066667 27.733333 81.066666 27.733334 68.266667 0 123.733333-27.733333 170.666667-81.066667 44.8-53.333333 68.266667-125.866667 68.266667-215.466667 0-108.8-38.4-196.266667-113.066667-264.533333C750.933333 119.466667 652.8 85.333333 531.2 85.333333c-130.133333 0-238.933333 42.666667-322.133333 128C128 300.8 85.333333 407.466667 85.333333 533.333333c0 123.733333 38.4 221.866667 117.333334 296.533334 78.933333 72.533333 179.2 110.933333 302.933333 110.933333 89.6 0 164.266667-12.8 221.866667-38.4v-100.266667c-64 29.866667-132.266667 44.8-209.066667 44.8-100.266667 0-177.066667-27.733333-234.666667-83.2-55.466667-55.466667-85.333333-132.266667-85.333333-228.266666 0-100.266667 32-183.466667 96-253.866667 64-68.266667 142.933333-104.533333 241.066667-104.533333 89.6 0 160 25.6 211.2 76.8 51.2 51.2 74.666667 117.333333 74.666666 198.4 0 59.733333-8.533333 106.666667-25.6 145.066666-17.066667 36.266667-40.533333 55.466667-66.133333 55.466667-25.6 0-38.4-23.466667-38.4-72.533333 0-44.8 8.533333-142.933333 23.466667-290.133334h-113.066667L597.333333 341.333333h-2.133333c-12.8-40.533333-44.8-61.866667-93.866667-61.866666-55.466667 0-102.4 25.6-142.933333 74.666666C320 403.2 298.666667 469.333333 298.666667 548.266667c0 61.866667 14.933333 108.8 42.666666 145.066666 27.733333 34.133333 66.133333 51.2 113.066667 51.2 61.866667 0 104.533333-34.133333 128-100.266666h2.133333c2.133333 32 12.8 57.6 34.133334 74.666666z m-51.2-322.133333c12.8 14.933333 19.2 38.4 19.2 66.133333 0 57.6-8.533333 104.533333-27.733334 140.8-19.2 34.133333-42.666667 53.333333-74.666666 53.333334-21.333333 0-36.266667-8.533333-51.2-27.733334-12.8-19.2-19.2-44.8-19.2-76.8 0-46.933333 8.533333-87.466667 27.733333-123.733333 19.2-36.266667 42.666667-53.333333 74.666667-53.333333 21.333333-2.133333 38.4 6.4 51.2 21.333333z" p-id="5934" ></path></svg>
                 </div>
-                <div class="chat_name_title">{{chat_name}}<span ref="click_nothing" @click="1==1"></span></div>
+                <div class="chat_name_title">{{chat_name}}<span ref="click_nothing_chat" @click="1==1"></span></div>
                 <div class="chat_header_info_icon_status"><header-status style="width:16px;height:16px" v-if="!isgroup" :now_status="friend_info.user_status"></header-status></div>
             </div>
             <div class="chat_header_op">
@@ -16,9 +16,50 @@
                 <div>
                     <svg t="1584926910933" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="10486" width="20" height="20"><path d="M1014.848 721.728a14.336 14.336 0 0 1-3.84 11.648c-3.84 7.744-7.744 11.648-15.488 11.648a35.008 35.008 0 0 1-19.2-3.84l-186.176-108.8v-275.2l186.048-108.8a27.584 27.584 0 0 1 38.72 23.232v449.792z"  p-id="10487"></path><path d="M803.584 251.456A60.352 60.352 0 0 0 740.928 192H126.656A60.352 60.352 0 0 0 64 251.456v490.816a60.352 60.352 0 0 0 62.656 59.456h618.24a60.352 60.352 0 0 0 62.656-59.456zM192 381.568a51.2 51.2 0 1 1 51.2-51.2 51.2 51.2 0 0 1-51.2 51.2z"  p-id="10488"></path></svg>
                 </div>
-                <div>
-                    <svg t="1584927050355" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18691" width="20" height="20"><path d="M596.088652 609.92938c66.349127-47.626717 97.692996-133.107577 97.692996-133.107577 70.77288-71.850421 21.3871-118.642121 8.809643-128.648009 1.112334-4.678556 1.734504-20.815071-0.25992-66.74003C703.958428 87.676875 572.884161 73.834612 572.884161 73.834612c-33.196053-7.461949-53.648874-8.278547-59.738569-8.343015-1.690502-0.097214-23.887037-1.190105-63.192228 7.531534 0 0-127.002532 24.425296-129.443118 207.598128-1.998517 45.924959-1.376347 62.059428-0.264013 66.74003-12.577456 9.998725-61.963237 56.796564 8.813736 128.648009 0 0 33.784454 83.036181 92.807732 133.107577 0 0 14.247492 41.927925-1.219781 72.045873 0 0-158.753677 31.750121-318.318836 188.063213l-0.601704 89.160669 418.028768 0.215918 0-0.225127 402.385487-0.201591 0.132006-88.137363C762.706437 713.731514 597.308433 681.980369 597.308433 681.980369 581.840136 651.856281 596.088652 609.92938 596.088652 609.92938L596.088652 609.92938zM596.088652 609.92938" p-id="18692" ></path><path d="M703.11727 577.820078l256.3249 0 0 59.859319-256.3249 0 0-59.859319Z" p-id="18693" ></path><path d="M801.349549 479.587799l59.860343 0 0 256.325923-59.860343 0 0-256.325923Z" p-id="18694" ></path></svg>
+                <el-popover placement="top-start" width="440" trigger="click" :visible-arrow="false" @show="popver_show()"
+               @after-leave="popver_show_leave()">
+              <div class="maspop_can">
+                <div class="maspop_can_head">
+                  <h5>选择朋友</h5>
+                  <p>你还可以添加{{chat_max_members}}位朋友。</p>
+                  <div class="maspop_can_head_input" ref="maspop_chat">
+                    <div class="maspop_can_head_input_item" v-for="sf in join_select_friend_list"
+                      :key="sf.uid">
+                      <div>{{sf.name}}</div>
+                      <span><svg @click="sf.selected=false;chat_max_members+=1;" t="1585204143380" class="icon"
+                          viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="6225"
+                          width="12" height="12">
+                          <path
+                            d="M512 620.544l253.3376 253.3376a76.6976 76.6976 0 1 0 108.544-108.544L620.6464 512l253.2352-253.3376a76.6976 76.6976 0 1 0-108.544-108.544L512 403.3536 258.6624 150.1184a76.6976 76.6976 0 1 0-108.544 108.544L403.3536 512 150.1184 765.3376a76.6976 76.6976 0 1 0 108.544 108.544L512 620.6464z"
+                            p-id="6226" fill="#c09282"></path>
+                        </svg></span>
+                    </div>
+                    <input placeholder="查找好友" />
+                  </div>
                 </div>
+                    <div class="maspop_can_body">
+                        <div v-for="fri in join_list_friends_to_select" :key="fri.uid" class="maspop_can_body_item">
+                        <user-head style="height: 32px;width: 32px;" :headimg="fri.headimg" v-bind:with_status="true"
+                        v-bind:user_status="fri.status" v-bind:bg_color="'#2f3136'"></user-head>
+                        <div class="maspop_can_body_item_name">{{fri.name}}<span>#{{fri.fix_id}}</span></div>
+                        <div>
+                            <el-checkbox @change="cbox_change($event)" v-model="fri.selected"
+                                :disabled="chat_max_members<=0&&!fri.selected"></el-checkbox>
+                        </div>
+                    </div>
+
+                    </div>
+                        <div class="maspop_can_footer">
+                        <button @click="join_member(join_select_friend_list)">加入群聊</button>
+                        </div>
+                    </div>
+    
+                    <div slot="reference" v-if="isgroup">
+                        <svg t="1584927050355" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="18691" width="20" height="20"><path d="M596.088652 609.92938c66.349127-47.626717 97.692996-133.107577 97.692996-133.107577 70.77288-71.850421 21.3871-118.642121 8.809643-128.648009 1.112334-4.678556 1.734504-20.815071-0.25992-66.74003C703.958428 87.676875 572.884161 73.834612 572.884161 73.834612c-33.196053-7.461949-53.648874-8.278547-59.738569-8.343015-1.690502-0.097214-23.887037-1.190105-63.192228 7.531534 0 0-127.002532 24.425296-129.443118 207.598128-1.998517 45.924959-1.376347 62.059428-0.264013 66.74003-12.577456 9.998725-61.963237 56.796564 8.813736 128.648009 0 0 33.784454 83.036181 92.807732 133.107577 0 0 14.247492 41.927925-1.219781 72.045873 0 0-158.753677 31.750121-318.318836 188.063213l-0.601704 89.160669 418.028768 0.215918 0-0.225127 402.385487-0.201591 0.132006-88.137363C762.706437 713.731514 597.308433 681.980369 597.308433 681.980369 581.840136 651.856281 596.088652 609.92938 596.088652 609.92938L596.088652 609.92938zM596.088652 609.92938" p-id="18692" ></path><path d="M703.11727 577.820078l256.3249 0 0 59.859319-256.3249 0 0-59.859319Z" p-id="18693" ></path><path d="M801.349549 479.587799l59.860343 0 0 256.325923-59.860343 0 0-256.325923Z" p-id="18694" ></path></svg>
+                    </div>
+          
+                </el-popover>
+                
                 <div v-if="isgroup" @click="ismemside=!ismemside" :class="{chat_icon_select:ismemside}">
                     <svg t="1584933506312" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="19584" width="20" height="20"><path d="M863.6188448 876.86257813A90.56711147 90.56711147 0 0 0 876.08888853 830.80533333V762.31111147c0-100.1244448-90.9312-186.5955552-222.27626666-226.59982294C706.3779552 485.64906667 739.5555552 412.0576 739.5555552 329.9555552c0-49.5616-12.1059552-96.0284448-33.2231104-136.07822187C801.13208853 200.97706667 876.08888853 289.7692448 876.08888853 398.22222187c0 70.76977813-31.85777813 133.16551147-80.41813333 169.9384896 126.11128853 27.30666667 216.95146667 103.90186667 216.95146667 194.1504v69.0403552a45.51111147 45.51111147 0 0 1-45.5111104 45.51111146h-103.49226667zM375.46666667 557.51111147c-125.65617813 0-227.5555552-112.0483552-227.5555552-250.31111147S249.81048853 56.88888853 375.46666667 56.88888853s227.5555552 112.0483552 227.5555552 250.31111147S501.1228448 557.51111147 375.46666667 557.51111147z m364.08888853 318.80533333a91.02222187 91.02222187 0 0 1-91.02222187 91.02222187H102.4a91.02222187 91.02222187 0 0 1-91.02222187-91.02222187V807.82222187C11.37777813 669.55946667 174.39857813 557.51111147 375.46666667 557.51111147s364.08888853 112.0483552 364.08888853 250.3111104v68.49422293z" p-id="19585" ></path></svg>
                 </div>
@@ -78,7 +119,7 @@
                 <div class="chat_member_sidebar_list">
                     <div class="chat_member_sidebar_list_in">
                         <div class="chat_member_sidebar_list_header">成员-{{get_group_member().length}}</div>
-                        <div class="chat_member_sidebar_list_item" v-for=" m in get_group_member()" :key="m.uid">
+                        <div class="chat_member_sidebar_list_item" v-for=" m in get_group_member()" :key="m.uid" @contextmenu="showContextMenu_chat($event, m)">
                             <div class="chat_member_sidebar_list_item_head">
                                 <user-head style="height: 32px;width: 32px;" :headimg="m.headimg" v-bind:with_status="true"  v-bind:user_status="m.status" v-bind:bg_color="'#2f3136'"></user-head>
                             </div>
@@ -118,6 +159,13 @@
                 </div>
             </div>
         </el-dialog>
+        <context-menu :show="contextMenu_chat.contextMenuVisible" :offset="contextMenu_chat.contextMenuOffset"
+      @update:show="show => (contextMenu_chat.contextMenuVisible = show)">
+            <div class="contextMenu_container">
+                <div class="contextMenu_master_item">个人资料</div>
+                <div class="contextMenu_master_item" style="color:red;" @click="removeFromGroup(contextMenu_chat.contextMenuItem)">移除群聊</div>
+            </div>
+        </context-menu>
         
     </div>
 </template>
@@ -141,7 +189,9 @@ export default {
             isgroup: this.$route.params.isgroup,
             chat_name: this.$route.params.name,
             ismemside: false,
+            chat_max_members:0,
             dialogAddFileVisible: false,
+            join_list_friends_to_select:[],
             friend_info: {},
             upload_file_info:{
                 name: '',
@@ -151,6 +201,15 @@ export default {
                 width: 0,
                 height: 0,
                 src:''
+            },
+            contextMenu_chat: {
+                contextMenuItem: {},
+                contextMenuIsGroup: false,
+                contextMenuVisible: false,
+                contextMenuOffset: {
+                    left: 0,
+                    top: 0
+                }
             }
         }
     },
@@ -161,6 +220,42 @@ export default {
         }
     },
     methods:{
+        showContextMenu_chat(e, chat_item) {
+            console.log(chat_item)
+            e.preventDefault();
+            this.contextMenu_chat.contextMenuItem = chat_item
+            this.contextMenu_chat.contextMenuIsGroup = chat_item.is_group
+            this.contextMenu_chat.contextMenuVisible = true;
+            this.contextMenu_chat.contextMenuOffset = {
+            left: e.pageX - 8,
+            top: e.pageY - 10
+            };
+        },
+        removeFromGroup(m){
+            this.$axios.post('http://localhost:9876/api/remove_member', {uid:m.uid,gid: this.uid})
+            .then((response) =>{
+                
+                if(response.status == 200){
+                    let code = response.data.code
+                    if(code == 1001){
+                        this.$message({ message: '移除成功',type: 'success'})
+                        this.$store.commit("remove_member",{uid:m.uid,gid: this.uid})
+                    }else if(code == 2011){
+                        this.$message({ message: '请重试',type: 'warning'})
+                    }else if(code == 2010){
+                        window.sessionStorage.clear();
+                        this.$router.push("/")
+                    }else{
+                        this.$message.error(response.data.message)
+                    }
+                }else{
+                    this.$message.error(response.status)
+                }
+            })
+            .catch(function (error) {
+                this.$message.error(error)
+            });
+        },
         fileUpload(e){
             let file = this.$refs.file_input.files[0]
              let type = file.type
@@ -409,11 +504,93 @@ export default {
                 chat_id: this.uid,
                 msg_id: e.msg_id
             })
+        },
+        popver_show_leave: function () {
+            
+    
+        },
+        popver_show: function () {
+            this.join_list_friends_to_select = []
+            for (let v of this.$store.state.myfriends.friends) {
+                let tmp = {
+                    ...v,
+                    selected: false
+                }
+                let idx = _.findIndex(this.get_group_member(), (o)=>{return o.uid== tmp.uid})
+                if(idx<0){
+                    this.join_list_friends_to_select.push(tmp)
+                }
+            }
+            
+            this.chat_max_members = 10 - this.get_group_member().length
+            this.box = this.$refs.maspop_chat
+            this.box.addEventListener("mousewheel", e => {
+            //计算鼠标滚轮滚动的距离
+            let v = -e.wheelDelta / 2;
+            this.box.scrollLeft += v;
+            //阻止浏览器默认方法
+            e.preventDefault();
+            }, false);
+        },
+        cbox_change(v) {
+        if (v) {
+          this.chat_max_members -= 1
+        } else {
+          this.chat_max_members += 1
         }
+        console.log('cbox_change')
+        this.$refs.maspop_chat.scrollTop = -10000
+      },
+      join_member(member) {
+
+        let count = member.length
+        let item = {}
+        if (count <= 0) {
+          return
+        }
+        
+        let member_id_list = []
+        for (let f of member) {
+            member_id_list.push(f.uid)
+        }
+
+          let body = {
+            members: member_id_list
+          }
+          this.$axios.post('http://localhost:9876/api/join_member', {gid: this.uid,members: member_id_list})
+          .then((response) =>{
+              
+            if(response.status == 200){
+                let code = response.data.code
+                if(code == 1001){
+                    this.$message({ message: '加入成功',type: 'success'})
+                }else if(code == 2011){
+                    this.$message({ message: '请重试',type: 'warning'})
+                }else if(code == 2010){
+                    window.sessionStorage.clear();
+                    this.$router.push("/")
+                }else{
+                    this.$message.error(response.data.message)
+                }
+            }else{
+                this.$message.error(response.status)
+            }
+        })
+        .catch(function (error) {
+            this.$message.error(error)
+        });
+            
+        this.$refs.click_nothing_chat.click()
+      }
     },
     computed:{
         open_memside: function(){
             return this.isgroup && this.ismemside
+        },
+        join_select_friend_list() {
+            return this.join_list_friends_to_select.filter((v) => {
+            return v.selected
+            })
         },
         ...mapGetters([
             'getMsgList'

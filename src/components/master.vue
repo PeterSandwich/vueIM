@@ -233,30 +233,7 @@
       </keep-alive>
     </div>
     <el-dialog :fullscreen="true" :visible.sync="dialogSettingVisible">
-      <div class="master_setting_dialog">
-        <div class="master_setting_dialog_sidebar"></div>
-        <div class="master_setting_dialog_body">
-          <div class="msdb_1"></div>
-          <div class="msdb_2">
-            <div class="master_setting_dialog_close">
-              <div @click="dialogSettingVisible=false">
-                <svg t="1585215681448" class="icon" viewBox="0 0 1024 1024" version="1.1"
-                  xmlns="http://www.w3.org/2000/svg" p-id="13482" width="34" height="34">
-                  <path id="svg_1" fill="#e6e6e6"
-                    d="m7.67,512.003c0,282.77 227.196,511.997 507.456,511.997c280.27,0 507.457,-229.227 507.457,-511.997s-227.187,-512.003 -507.456,-512.003c-280.26,0 -507.458,229.233 -507.458,512.003l0.001,0z" />
-                  <path stroke="null" id="svg_2" fill="#d81e06"
-                    d="m729.1236,298.11762c11.5673,11.41216 11.5673,31.37174 0,42.78849l-390.8125,384.97836c-11.58724,11.38915 -31.85129,11.38915 -43.43469,0c-11.5673,-11.40832 -11.5673,-31.37634 0,-42.78849l390.80943,-384.97759c11.58647,-11.39299 31.85512,-11.39299 43.43776,0l0,-0.00077z" />
-                  <path stroke="null" id="svg_3" fill="#d81e06"
-                    d="m301.40334,299.80205c11.23808,-11.30459 30.8915,-11.30459 42.12958,0l379.06583,381.94742c11.21432,11.3242 11.21432,31.13253 0,42.45203c-11.23885,11.29988 -30.8915,11.29988 -42.13418,0l-379.06046,-381.94742c-11.21815,-11.32891 -11.21815,-31.13253 0,-42.45203l-0.00077,0z" />
-                </svg>
-              </div>
-              <h5>
-                ESC
-              </h5>
-            </div>
-          </div>
-        </div>
-      </div>
+      <setting-dialog @close="dialogSettingVisible=false"></setting-dialog>
     </el-dialog>
     <template>
       <el-dialog class="status_dialog" top="25vh" width="440" :visible.sync="dialogStatusVisible">
@@ -403,7 +380,7 @@
           <div class="contextMenu_master_item" slot="reference" v-show="contextMenu.contextMenuIsGroup">静音对话<svg t="1585640971258" class="icon" viewBox="0 0 1000 1000" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="29022" width="16" height="16"><path d="M606.688 856.688l312.5-312.5c24.406-24.406 24.406-63.969 0-88.376l-312.5-312.5c-24.406-24.406-63.969-24.406-88.376 0-24.406 24.406-24.406 63.969 0 88.376l205.813 205.813h-599.125c-34.531 0-62.5 27.969-62.5 62.5s27.969 62.5 62.5 62.5h599.125l-205.813 205.813c-12.188 12.188-18.313 28.188-18.313 44.188s6.095 32 18.313 44.188c24.406 24.406 63.969 24.406 88.376 0z" p-id="29023" fill="#8a8a8a"></path></svg></div>
           </el-popover>
           <div class="contextMenu_master_item_splash" v-if="contextMenu.contextMenuIsGroup"></div>
-          <div class="contextMenu_master_item contextMenu_master_item_del" v-if="contextMenu.contextMenuIsGroup">退出组</div> 
+          <div class="contextMenu_master_item contextMenu_master_item_del" v-if="contextMenu.contextMenuIsGroup" @click="exitGroup(contextMenu.contextMenuItem)">退出组</div> 
       </div>
     </context-menu>
   </div>
@@ -419,6 +396,7 @@
   import myhead from './common/myhead.vue';
   import status from './common/status.vue';
   import emoji from './chat/emoji'
+  import setting from './setting'
   export default {
     name: 'master',
     data: function () {
@@ -444,6 +422,7 @@
         create_chat_list_friends_to_select: [],
         create_chat_max_members: 0,
         contextMenu: {
+          contextMenuItem: {},
           contextMenuIsGroup: false,
           contextMenuVisible: false,
           contextMenuOffset: {
@@ -475,14 +454,16 @@
         this.$axios.get('http://localhost:9876/api/chat_list')
         .then((response) =>{
             console.log("chat_list=>",response);
-            if(response.status == 200 && response.data.code == 1001){
-              this.$store.commit("set_chatlist",response.data.data)
-                
-            }else if(response.data.code == 2010){
+            if(response.status == 200 ){
+              let code = response.data.code
+              if(code == 1001){
+                this.$store.commit("set_chatlist",response.data.data)
+              }else if(code == 2010){
                 window.sessionStorage.clear();
-                 this.$router.push('/')
-            }else{
+                this.$router.push('/')
+              }else{
                 this.$message.error(response.data.message)
+              }
             }
         })
         .catch(function (error) {
@@ -492,12 +473,43 @@
       showContextMenu(e, chat_item) {
         console.log(chat_item)
         e.preventDefault();
+        this.contextMenu.contextMenuItem = chat_item
         this.contextMenu.contextMenuIsGroup = chat_item.is_group
         this.contextMenu.contextMenuVisible = true;
         this.contextMenu.contextMenuOffset = {
           left: e.pageX - 8,
           top: e.pageY - 10
         };
+      },
+      exitGroup(chat){
+        if(chat.is_group){
+          this.$axios.post('http://localhost:9876/api/exit_group', {gid: chat.uid})
+          .then((response) =>{
+              
+            if(response.status == 200){
+                let code = response.data.code
+                if(code == 1001){
+                    this.$message({ message: '退出成功',type: 'success'})
+                    this.$store.commit("chatlist_delete",chat.uid)
+                     this.$router.push("/")
+                }else if(code == 2011){
+                    this.$message({ message: '请重试',type: 'warning'})
+                }else if(code == 2010){
+                    window.sessionStorage.clear();
+                    this.$router.push("/")
+                }else{
+                    this.$message.error(response.data.message)
+                }
+            }else{
+                this.$message.error(response.status)
+            }
+        })
+        .catch(function (error) {
+            this.$message.error(error)
+        });
+        this.$refs.click_nothing.click()
+        }
+
       },
       cbox_change(v) {
         if (v) {
@@ -769,7 +781,8 @@
     components: {
       'user-head': myhead,
       'user-status': status,
-      'input-emoji': emoji
+      'input-emoji': emoji,
+      'setting-dialog':setting
     }
 
   }
@@ -1335,60 +1348,7 @@
     display: none;
   }
 
-  .master_setting_dialog {
-    display: grid;
-    width: 100%;
-    height: 100%;
-    grid-template-columns: 1fr 2.3fr;
-  }
-
-  .master_setting_dialog_sidebar {
-    min-width: 220px;
-    background-color: #2f3136;
-    height: 100%;
-  }
-
-  .master_setting_dialog_body {
-    min-width: 600px;
-
-    background-color: #36393f;
-    height: 100%;
-
-    display: grid;
-    width: 100%;
-    grid-template-columns: 740px auto;
-  }
-
-  .msdb_1 {
-    background-color: burlywood;
-  }
-
-  .msdb_2 {
-    position: relative;
-  }
-
-  .master_setting_dialog_close {
-    position: absolute;
-    width: 80px;
-    left: 0;
-    top: 40px;
-
-  }
-
-  .master_setting_dialog_close>div {
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-  }
-
-  .master_setting_dialog_close>h5 {
-    width: 100%;
-    text-align: center;
-    color: #72767d;
-    font-size: 14px;
-  }
+  .
 
   .status_dialog .el-dialog {
     width: 440px;
@@ -1668,4 +1628,8 @@
     font-size: 16px;
     text-align: center;
   }
+
+
+
+  
 </style>
