@@ -137,7 +137,8 @@
         <el-dialog class="AddFileDialog" :visible.sync="dialogAddFileVisible" top="40vh">
             <div class="afd_container">
                 <div class="afd_header">
-                    <div class="afd_h_img"><img :src="upload_file_info.src"/></div>
+                    <div class="afd_h_img" v-if="upload_file_info.src!=''"><img :src="upload_file_info.src"/></div>
+                    <div class="afd_h_img" v-else><svg t="1588168387502" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2850" width="100" height="100"><path d="M61.44 331.70432m61.44 0l481.28 0q61.44 0 61.44 61.44l0 542.72q0 61.44-61.44 61.44l-481.28 0q-61.44 0-61.44-61.44l0-542.72q0-61.44 61.44-61.44Z" fill="#FEE1AF" p-id="2851"></path><path d="M788.48 997.30432h-450.56a163.84 163.84 0 0 1-163.84-163.84v-593.92a163.84 163.84 0 0 1 163.84-163.84h311.87968L952.32 378.22464V833.46432a163.84 163.84 0 0 1-163.84 163.84z" fill="#FF9405" p-id="2852"></path><path d="M649.96352 75.81696l302.6432 302.2848-299.8784 3.08224z" fill="#FDC55D" p-id="2853"></path><path d="M286.72 290.74432m40.96 0l153.6 0q40.96 0 40.96 40.96l0 0q0 40.96-40.96 40.96l-153.6 0q-40.96 0-40.96-40.96l0 0q0-40.96 40.96-40.96Z" fill="#FDC55D" p-id="2854"></path><path d="M286.72 772.02432m40.96 0l153.6 0q40.96 0 40.96 40.96l0 0q0 40.96-40.96 40.96l-153.6 0q-40.96 0-40.96-40.96l0 0q0-40.96 40.96-40.96Z" fill="#FDC55D" p-id="2855"></path><path d="M573.44 772.02432m40.96 0l92.16 0q40.96 0 40.96 40.96l0 0q0 40.96-40.96 40.96l-92.16 0q-40.96 0-40.96-40.96l0 0q0-40.96 40.96-40.96Z" fill="#FDC55D" p-id="2856"></path><path d="M286.72 423.86432m61.44 0l337.92 0q61.44 0 61.44 61.44l0 143.36q0 61.44-61.44 61.44l-337.92 0q-61.44 0-61.44-61.44l0-143.36q0-61.44 61.44-61.44Z" fill="#FFFFFF" p-id="2857"></path></svg></div>
                     <div class="afd_h_itle">{{upload_file_info.name}}</div>
                 </div>
                 <div class="afd_body">
@@ -232,7 +233,7 @@ export default {
             };
         },
         removeFromGroup(m){
-            this.$axios.post('http://localhost:9876/api/remove_member', {uid:m.uid,gid: this.uid})
+            this.$axios.post('/api/remove_member', {uid:m.uid,gid: this.uid})
             .then((response) =>{
                 
                 if(response.status == 200){
@@ -300,7 +301,7 @@ export default {
         insertEmoji(e){
             this.$refs.mip.addemj(e)
             this.$refs.mip.click_to_focus()
-            this.$refs.click_nothing.click()
+            this.$refs.click_nothing_chat.click()
         },
         message_with_head(idx){
             if(idx>0){
@@ -315,7 +316,7 @@ export default {
             return true
         },
         sendGif(e){
-            this.$refs.click_nothing.click()
+            this.$refs.click_nothing_chat.click()
             let msgid = uuid.v4();
             this.$store.commit('msglist_add',{
                 chat_id: this.uid,
@@ -557,7 +558,7 @@ export default {
           let body = {
             members: member_id_list
           }
-          this.$axios.post('http://localhost:9876/api/join_member', {gid: this.uid,members: member_id_list})
+          this.$axios.post('/api/join_member', {gid: this.uid,members: member_id_list})
           .then((response) =>{
               
             if(response.status == 200){
@@ -609,7 +610,7 @@ export default {
             }
 
             if(this.isgroup){
-                this.$axios.post('http://localhost:9876/api/group_member', {"gid": this.uid})
+                this.$axios.post('/api/group_member', {"gid": this.uid})
                     .then((response) =>{
                         console.log(response);
                         if(response.status == 200 && response.data.code == 1001){
@@ -627,7 +628,7 @@ export default {
             }
 
             if(this.$store.getters.getMsgList(this.$route.params.id).length==0){
-           this.$axios.post("http://localhost:9876/api/message",{
+           this.$axios.post("/api/message",{
                uid: this.$route.params.id,
                is_group: this.isgroup,
                index: 0,

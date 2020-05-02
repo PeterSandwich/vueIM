@@ -55,7 +55,7 @@ export default {
         }
     },
     mounted:function(){
-        this.$axios.get('http://localhost:9876/api/shield_friend_list')
+        this.$axios.get('/api/shield_friend_list')
             .then((response) =>{
                 if(response.status == 200 && response.data.code == 1001){
                     console.log(response.data.data)

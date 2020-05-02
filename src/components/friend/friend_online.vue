@@ -81,7 +81,7 @@ export default {
                     avatar: this.$store.state.myfriends.friends[fidx].headimg
                 })
 
-                this.$axios.post('http://localhost:9876/api/chat_open', {uid: uid})
+                this.$axios.post('/api/chat_open', {uid: uid})
                 .then((response) =>{console.log(response);})
                 .catch(function (error) {console.log(error);})
             }
@@ -96,7 +96,7 @@ export default {
         }
     },
     mounted:function(){
-        this.$axios.get('http://localhost:9876/api/all_friend_list')
+        this.$axios.get('/api/all_friend_list')
             .then((response) =>{
                 if(response.status == 200 && response.data.code == 1001){
                     console.log(response.data.data)

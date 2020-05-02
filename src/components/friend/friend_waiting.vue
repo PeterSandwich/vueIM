@@ -47,7 +47,7 @@ export default {
         }
     },
     mounted:function(){
-        this.$axios.get('http://localhost:9876/api/request_friend_list')
+        this.$axios.get('/api/request_friend_list')
             .then((response) =>{
                 if(response.status == 200 && response.data.code == 1001){
                     console.log(response.data.data)
@@ -111,7 +111,7 @@ export default {
                 console.log("uid 为空")
                 return
             }
-            this.$axios.post('http://localhost:9876/api/agree_request_friend',{uid:uid})
+            this.$axios.post('/api/agree_request_friend',{uid:uid})
             .then((response) =>{
                 if(response.status == 200 && response.data.code == 1001){
                     this.$message({ message: '已接受 '+name+" 的请求",type: 'success'})
@@ -131,7 +131,7 @@ export default {
                 console.log("uid 为空")
                 return
             }
-            this.$axios.post('http://localhost:9876/api/refuse_request_friend',{uid:uid})
+            this.$axios.post('/api/refuse_request_friend',{uid:uid})
             .then((response) =>{
                 if(response.status == 200 && response.data.code == 1001){
                     this.$message({ message: '已拒绝 '+name+" 的请求",type: 'success'})

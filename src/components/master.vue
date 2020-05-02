@@ -451,7 +451,7 @@
     },
     methods: {
       AxiosGetChatList(){
-        this.$axios.get('http://localhost:9876/api/chat_list')
+        this.$axios.get('/api/chat_list')
         .then((response) =>{
             console.log("chat_list=>",response);
             if(response.status == 200 ){
@@ -483,7 +483,7 @@
       },
       exitGroup(chat){
         if(chat.is_group){
-          this.$axios.post('http://localhost:9876/api/exit_group', {gid: chat.uid})
+          this.$axios.post('/api/exit_group', {gid: chat.uid})
           .then((response) =>{
               
             if(response.status == 200){
@@ -529,7 +529,7 @@
             num: 0,
             dsc: '今天'
           }
-          this.$axios.post("http://localhost:9876/api/change_sd_status",{
+          this.$axios.post("/api/change_sd_status",{
           self_defind_status: "",
           self_defind_status_deadline: 0
           })
@@ -549,7 +549,7 @@
           keep_time: this.status_time_downlist_value.num
         })
 
-        this.$axios.post("http://localhost:9876/api/change_sd_status",{
+        this.$axios.post("/api/change_sd_status",{
           self_defind_status: this.self_df_status_emj + this.self_df_status_msg,
           self_defind_status_deadline: this.status_time_downlist_value.num
           })
@@ -578,7 +578,7 @@
                     avatar: this.$store.state.myfriends.friends[fidx].headimg
                 })
 
-                this.$axios.post('http://localhost:9876/api/chat_open', {uid: uid})
+                this.$axios.post('/api/chat_open', {uid: uid})
                 .then((response) =>{console.log(response);})
                 .catch(function (error) {console.log(error);})
             }
@@ -626,7 +626,7 @@
               isgroup: item.is_group
             }
           }).catch(() => {})
-          this.$axios.post("http://localhost:9876/api/clear_unread",{
+          this.$axios.post("/api/clear_unread",{
             uid: item.uid,
             isgroup: item.is_group
           }).then((response)=>{})
@@ -649,7 +649,7 @@
       delete_chat: function (chat_id) {
         this.$router.push({path: '/master/@me'})
         this.$store.commit('chatlist_delete', chat_id)
-        this.$axios.post('http://localhost:9876/api/chat_close', {uid: chat_id})
+        this.$axios.post('/api/chat_close', {uid: chat_id})
         .then((response) =>{console.log(response);})
         .catch(function (error) {console.log(error);})
         
@@ -679,7 +679,7 @@
       change_status: function (s) {
         this.$store.commit('switch_status', s)
         this.changing_status = false
-        this.$axios.post("http://localhost:9876/api/change_status",{status: s})
+        this.$axios.post("/api/change_status",{status: s})
         .then((response)=>{
           if(response.data.code == 2010){
                 window.sessionStorage.clear();
@@ -715,7 +715,7 @@
             avatar: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ5dvniigoyg8s7uEI2AwX3PFdiq1rjy5LfY8OOj-k1BrS3pNs2r3Xs&s',
             members: member_id_list
           }
-          this.$axios.post('http://localhost:9876/api/group', body)
+          this.$axios.post('/api/group', body)
           .then((response) =>{
               console.log(response);
               if(response.status == 200 && response.data.code == 1001){

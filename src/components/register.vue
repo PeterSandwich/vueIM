@@ -59,7 +59,7 @@ export default {
               this.$message.error("输入字段不能为空");
           }
           this.fullscreenLoading = true
-        this.$axios.post('http://localhost:9876/api/signup', {
+        this.$axios.post('/api/signup', {
             email: this.email,
             name: this.name ,
             passwd: this.passwd

@@ -115,7 +115,7 @@ export default {
             this.isChangePwd = true
         },
         EXIT(){
-            window.sessionStorage.clear()
+            window.localStorage.clear()
             location.reload()
         },
         modifyInfo(){
@@ -143,7 +143,7 @@ export default {
                 telephone: this.userinfo.telephone
             }
             console.log("param",param)
-            this.$axios.post('http://localhost:9876/api/change_userinfo', param)
+            this.$axios.post('/api/change_userinfo', param)
             .then((response) =>{
                     if(response.status == 200){
                         let code = response.data.code
@@ -169,7 +169,7 @@ export default {
                 old_pwd: this.old_pwd
             }
             console.log(param)
-            this.$axios.post('http://localhost:9876/api/change_pwd', param)
+            this.$axios.post('/api/change_pwd', param)
             .then((response) =>{
                 if(response.status == 200){
                     let code = response.data.code
@@ -191,7 +191,7 @@ export default {
             let file = this.$refs.avatar_input.files[0];
             let param = new FormData();
             param.append('file',file);
-            this.$axios.post('http://localhost:9876/upload', param,
+            this.$axios.post('/api/upload', param,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'
@@ -199,7 +199,7 @@ export default {
                 }
             ).then((response) =>{
                 if(response.status == 200 && response.data.code == 1001){
-                     this.change_avatar= "http://localhost:9876/files/"+response.data.data
+                     this.change_avatar= "/files/"+response.data.data
                      this.userinfo.headimg = "/files/"+response.data.data
                 }
             })

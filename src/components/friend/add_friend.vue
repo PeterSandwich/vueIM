@@ -54,7 +54,7 @@ export default {
         }
     },
     mounted:function(){
-        this.$axios.get('http://localhost:9876/api/request_friend_list_me')
+        this.$axios.get('/api/request_friend_list_me')
             .then((response) =>{
                 if(response.status == 200 && response.data.code == 1001){
                     if(response.data.data){
@@ -89,7 +89,7 @@ export default {
             }
             var querys = this.queryStr
             this.queryStr=""
-            this.$axios.post('http://localhost:9876/api/request_friend', {
+            this.$axios.post('/api/request_friend', {
                 querystr: querys
             })
             .then((response) =>{

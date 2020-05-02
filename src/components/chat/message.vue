@@ -158,7 +158,7 @@ export default {
         console.log("param:",this.msg)
         if(this.msg.param){
             this.source = this.$axios.CancelToken.source();
-            this.$axios.post('http://localhost:9876/upload', this.msg.param,
+            this.$axios.post('/api/upload', this.msg.param,
                 {
                     headers: {
                         'Content-Type': 'multipart/form-data'

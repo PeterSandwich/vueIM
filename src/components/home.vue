@@ -166,12 +166,15 @@
 
 <script>
 import { mapGetters } from 'vuex';
-import home_loading from './common/home_loading'
-import butif_loading from './common/butif_loading'
+import home_loading from './common/home_loading';
+import butif_loading from './common/butif_loading';
+import { Message } from 'element-ui';
 export default {
     name: 'home',
     data: function () {
         return {
+            websocketUrl:"",
+            websocketGetCount: 10,
             discovery_select: false,
             currentHover: 'home',
             opendelay: 100,
@@ -197,12 +200,34 @@ export default {
             if(typeof(WebSocket) === "undefined"){
                 alert("您的浏览器不支持socket")
             }else{
-                this.$gws.setWs(new WebSocket("ws://localhost:9876/ws"))
-                this.$gws.ws.onmessage = this.onmessage
-                this.$gws.ws.onopen = this.onopen
-                this.$gws.ws.onclose = this.onclose
-                this.$gws.ws.onerror = this.onerror
+                this.websocketGetCount = 6
+                this.getWebsocketUrl()
             }
+        },
+        websocketCreate(){
+            this.$gws.setWs(new WebSocket(this.websocketUrl))
+            this.$gws.ws.onmessage = this.onmessage
+            this.$gws.ws.onopen = this.onopen
+            this.$gws.ws.onclose = this.onclose
+            this.$gws.ws.onerror = this.onerror
+        },
+        getWebsocketUrl(){
+            this.$axios.get("/api/websocket_url").then((response)=>{
+                console.log(response.data)
+                if(response.data.code == 1001){
+                    this.websocketUrl =  response.data.data+"?"+this.$store.state.me.base.me_id
+                    this.websocketCreate()
+                }else{
+                    if(this.websocketGetCount>0){
+                        this.websocketGetCount--
+                        this.getWebsocketUrl()
+                    }else{
+                        window.sessionStorage.clear()
+                        location.reload()
+                        return
+                    }
+                }
+            })
         },
         onmessage:function(event){
             console.log("onmessage")
@@ -244,10 +269,11 @@ export default {
         },
         onclose:function(){
              this.isConnecting = true
-             this.$gws.setWs(new WebSocket("ws://localhost:9876/ws"))
+             this.$gws.setWs(new WebSocket(this.websocketUrl))
         },
-        onerror:function(){
-            console.log("onerror")
+        onerror:function(error){
+            Message.error("出现了些问题，正在重试...")
+            this.$gws.setWs(new WebSocket(this.websocketUrl))
         },
         currentChoose:function(key, value){
             let ph = this.$route.path.split('/')[1]
